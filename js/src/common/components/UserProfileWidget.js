@@ -122,7 +122,7 @@ export default class UserProfileWidget extends Component {
   }
 
   renderCustomFields() {
-    if (!this.profile.customFields) {
+    if (!this.profile || !this.profile.customFields) {
       return null;
     }
 
@@ -130,7 +130,7 @@ export default class UserProfileWidget extends Component {
     const sections = [];
 
     this.fields.forEach(field => {
-      if (field.isActive() && customFields[field.name()]) {
+      if (field.isActive() && customFields && customFields[field.name()]) {
         sections.push(
           <div key={field.id()} className="UserProfileWidget-section">
             <h4>{field.label()}</h4>

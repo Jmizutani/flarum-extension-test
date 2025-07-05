@@ -1,9 +1,9 @@
-import ExtensionPage from 'flarum/admin/components/ExtensionPage';
+import Page from 'flarum/common/components/Page';
 import Button from 'flarum/common/components/Button';
 import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
 import ProfileFieldModal from './ProfileFieldModal';
 
-export default class ProfileFieldsPage extends ExtensionPage {
+export default class ProfileFieldsPage extends Page {
   oninit(vnode) {
     super.oninit(vnode);
     
@@ -11,6 +11,19 @@ export default class ProfileFieldsPage extends ExtensionPage {
     this.fields = [];
     
     this.loadFields();
+  }
+  
+  // Add page metadata for proper registration
+  static get component() {
+    return ProfileFieldsPage;
+  }
+  
+  static get route() {
+    return '/profile-fields';
+  }
+  
+  static get title() {
+    return 'プロフィールフィールド設定';
   }
 
   loadFields() {
@@ -28,7 +41,7 @@ export default class ProfileFieldsPage extends ExtensionPage {
       });
   }
 
-  content() {
+  view() {
     if (this.loading) {
       return (
         <div className="ProfileFieldsPage">
