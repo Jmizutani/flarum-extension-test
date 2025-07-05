@@ -10,11 +10,22 @@ app.initializers.add('flarum-user-profile', () => {
   // Debug logging
   console.log('User Profile Admin extension loaded');
   
-  // Register the page with proper configuration
+  // Try both registration methods
   app.extensionData
     .for('junya/flarum-user-profile')
     .registerPage(ProfileFieldsPage);
     
+  // Also try registering a simple setting
+  app.extensionData
+    .for('junya/flarum-user-profile')
+    .registerSetting({
+      setting: 'user-profile-enabled',
+      label: 'プロフィール機能を有効にする',
+      type: 'boolean',
+      default: true
+    });
+    
   // Verify registration
   console.log('Extension page registered for junya/flarum-user-profile');
+  console.log('Available routes:', app.routes);
 });

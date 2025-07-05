@@ -12,6 +12,10 @@ export default class ProfileFieldsPage extends Page {
     
     this.loadFields();
   }
+  
+  static get route() {
+    return 'profile-fields';
+  }
 
   loadFields() {
     this.loading = true;
