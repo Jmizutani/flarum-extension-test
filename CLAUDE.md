@@ -6,29 +6,38 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Flarum extension for user profiles that allows users to register and display personal information including introduction, childcare/care situations, and social links. The extension includes privacy settings to control visibility.
+This is a Flarum extension that provides customizable user profiles with dynamic fields and social links. Administrators can create, edit, and manage custom profile fields through an admin interface, while users can fill out these fields along with social media links. The extension includes privacy controls and permission-based access.
 
 ## Architecture
 
+### Core Database Design
+The extension uses a flexible three-table structure:
+- **`profile_fields`**: Stores field definitions (name, label, type, required, sort_order, is_active)
+- **`profile_field_values`**: Stores user-specific values for each field (user_id, field_id, value)
+- **`user_profiles`**: Stores fixed data (social links, visibility settings)
+
+This design allows unlimited custom fields without schema changes.
+
 ### Backend (PHP)
-- **Model**: `UserProfile` model with database relationships to Flarum's User model
-- **API Controllers**: Create/Show controllers for profile data management with permission checks
-- **Serializer**: JSON API serialization for frontend consumption
-- **Migration**: Database table creation for user profile data storage
-- **Extension Registration**: `extend.php` registers routes, models, and frontend assets
+- **Models**: `ProfileField`, `ProfileFieldValue`, `UserProfile` with Eloquent relationships
+- **API Controllers**: CRUD operations for both profile fields (admin) and user profiles (users)
+- **Data Flow**: UserProfile model provides `getFieldValue()` and `setFieldValue()` methods for dynamic field access
+- **Migration Strategy**: Automatic migration from fixed fields (introduction, childcare_situation, care_situation) to dynamic fields
+- **Permission System**: Admin-only access for field management, user-owner-admin access for profile viewing
 
 ### Frontend (JavaScript)
-- **Models**: Client-side UserProfile model matching API structure
-- **Components**: 
-  - `UserProfileWidget`: Display component for user profiles with edit capability
-  - `UserProfileModal`: Modal dialog for profile editing
-- **Integration**: Extends Flarum's UserPage to add profile widget to sidebar
+- **Admin Interface**: 
+  - `ProfileFieldsPage`: Main admin interface for field management
+  - `ProfileFieldModal`: Field creation/editing modal
+- **User Interface**:
+  - `UserProfileWidget`: Dynamic display component that renders fields based on admin configuration
+  - `UserProfileModal`: Dynamic form that generates inputs based on available fields
+- **Data Synchronization**: Frontend automatically loads field definitions and renders UI accordingly
 
-### Key Features
-- Privacy controls (public/private profiles)
-- Permission-based access (own profile, admin override)
-- Social media links integration
-- Responsive design with custom styling
+### Extension Integration
+- **Flarum Integration**: Extends UserPage sidebar, registers admin pages through extensionData
+- **Asset Management**: Separate builds for admin and forum with shared common components
+- **API Design**: RESTful endpoints following Flarum's JSON API conventions
 
 ## Development Commands
 
@@ -42,18 +51,38 @@ npm run build          # Production build
 npm run build:dev      # Development build
 npm run watch          # Watch mode for development
 
+# Clear Flarum cache after PHP changes
+php flarum cache:clear
+
 # No lint or test commands currently configured
 ```
 
-## Database Schema
-
-The extension creates a `user_profiles` table with:
-- User relationship (foreign key to users table)
-- Text fields for introduction, childcare_situation, care_situation
-- URL fields for social links (facebook_url, x_url, instagram_url)
-- Boolean visibility flag (is_visible)
-
 ## API Endpoints
 
-- `POST /api/user-profiles` - Create/update user profile
+### Profile Fields (Admin)
+- `GET /api/profile-fields` - List all profile field definitions
+- `POST /api/profile-fields` - Create new profile field
+- `PATCH /api/profile-fields/{id}` - Update profile field
+- `DELETE /api/profile-fields/{id}` - Delete profile field
+
+### User Profiles
 - `GET /api/user-profiles?userId={id}` - Retrieve user profile with privacy checks
+- `POST /api/user-profiles` - Create/update user profile (includes customFields object)
+
+## Key Implementation Details
+
+### Dynamic Field Rendering
+- Frontend components load field definitions from API and generate forms dynamically
+- Field types supported: 'text' (single line) and 'textarea' (multi-line)
+- Validation includes required field checking and type-appropriate input rendering
+
+### Data Migration Strategy
+- Existing fixed fields automatically migrated to dynamic system
+- Default fields (introduction, childcare_situation, care_situation) created during migration
+- Old columns safely removed after successful migration
+
+### Permission Model
+- Profile field management: Admin only
+- Profile viewing: Public (if visible), owner, or admin
+- Profile editing: Owner only
+- Privacy toggle affects entire profile visibility
