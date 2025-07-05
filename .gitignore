@@ -3,7 +3,7 @@ node_modules/
 vendor/
 
 # Build outputs
-js/dist/
+/dist/
 *.min.js
 *.min.css
 
