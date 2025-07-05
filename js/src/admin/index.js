@@ -9,17 +9,12 @@ app.initializers.add('flarum-user-profile', () => {
   
   // Debug logging
   console.log('User Profile Admin extension loaded');
-  console.log('app.extensionData:', app.extensionData);
   
   // Register the page with proper configuration
   app.extensionData
     .for('junya/flarum-user-profile')
-    .registerPage(ProfileFieldsPage, {
-      route: '/profile-fields',
-      title: 'プロフィールフィールド設定'
-    });
+    .registerPage(ProfileFieldsPage);
     
   // Verify registration
-  console.log('Extension data registered for junya/flarum-user-profile');
-  console.log('Extension data:', app.extensionData.getExtensionData('junya/flarum-user-profile'));
+  console.log('Extension page registered for junya/flarum-user-profile');
 });

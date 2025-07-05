@@ -12,19 +12,6 @@ export default class ProfileFieldsPage extends Page {
     
     this.loadFields();
   }
-  
-  // Add page metadata for proper registration
-  static get component() {
-    return ProfileFieldsPage;
-  }
-  
-  static get route() {
-    return '/profile-fields';
-  }
-  
-  static get title() {
-    return 'プロフィールフィールド設定';
-  }
 
   loadFields() {
     this.loading = true;
