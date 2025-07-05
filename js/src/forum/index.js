@@ -1,0 +1,16 @@
+import app from 'flarum/forum/app';
+import UserProfile from '../common/models/UserProfile';
+import UserProfileWidget from '../common/components/UserProfileWidget';
+import { extend } from 'flarum/common/extend';
+import UserPage from 'flarum/forum/components/UserPage';
+
+app.initializers.add('flarum-user-profile', () => {
+  app.store.models['user-profiles'] = UserProfile;
+  
+  extend(UserPage.prototype, 'sidebarItems', function (items) {
+    items.add('userProfile', 
+      <UserProfileWidget user={this.user} />,
+      10
+    );
+  });
+});

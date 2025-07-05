@@ -1,0 +1,27 @@
+{
+    "name": "junya/flarum-user-profile",
+    "description": "User profile extension for Flarum with introduction, childcare, care situation, and social links",
+    "type": "flarum-extension",
+    "license": "MIT",
+    "require": {
+        "flarum/core": "^1.0.0"
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "User Profile",
+            "category": "feature",
+            "icon": {
+                "name": "fas fa-user",
+                "backgroundColor": "#4D698E",
+                "color": "#FFF"
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Junya\\FlarumUserProfile\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
