@@ -29,9 +29,6 @@ class CreateUserProfileController extends AbstractCreateController
         
         if ($profile) {
             $profile->update([
-                'introduction' => $data['introduction'] ?? null,
-                'childcare_situation' => $data['childcareSituation'] ?? null,
-                'care_situation' => $data['careSituation'] ?? null,
                 'facebook_url' => $data['facebookUrl'] ?? null,
                 'x_url' => $data['xUrl'] ?? null,
                 'instagram_url' => $data['instagramUrl'] ?? null,
@@ -40,14 +37,18 @@ class CreateUserProfileController extends AbstractCreateController
         } else {
             $profile = UserProfile::create([
                 'user_id' => $userId,
-                'introduction' => $data['introduction'] ?? null,
-                'childcare_situation' => $data['childcareSituation'] ?? null,
-                'care_situation' => $data['careSituation'] ?? null,
                 'facebook_url' => $data['facebookUrl'] ?? null,
                 'x_url' => $data['xUrl'] ?? null,
                 'instagram_url' => $data['instagramUrl'] ?? null,
                 'is_visible' => $data['isVisible'] ?? true
             ]);
+        }
+        
+        // カスタムフィールドの処理
+        if (isset($data['customFields'])) {
+            foreach ($data['customFields'] as $fieldName => $value) {
+                $profile->setFieldValue($fieldName, $value);
+            }
         }
         
         return $profile;

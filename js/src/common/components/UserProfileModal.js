@@ -9,14 +9,44 @@ export default class UserProfileModal extends Modal {
     
     const profile = this.attrs.profile || {};
     
-    this.introduction = Stream(profile.introduction || '');
-    this.childcareSituation = Stream(profile.childcareSituation || '');
-    this.careSituation = Stream(profile.careSituation || '');
     this.facebookUrl = Stream(profile.facebookUrl || '');
     this.xUrl = Stream(profile.xUrl || '');
     this.instagramUrl = Stream(profile.instagramUrl || '');
     this.isVisible = Stream(profile.isVisible !== undefined ? profile.isVisible : true);
     this.loading = false;
+    this.fieldsLoading = true;
+    this.fields = [];
+    this.customFields = {};
+    
+    // カスタムフィールドの初期化
+    if (profile.customFields) {
+      this.customFields = { ...profile.customFields };
+    }
+    
+    this.loadFields();
+  }
+
+  loadFields() {
+    app.store.find('profile-fields')
+      .then(fields => {
+        this.fields = fields.sort((a, b) => a.sortOrder() - b.sortOrder());
+        
+        // カスタムフィールドのStreamを初期化
+        this.fields.forEach(field => {
+          if (!this.customFields[field.name()]) {
+            this.customFields[field.name()] = Stream('');
+          } else {
+            this.customFields[field.name()] = Stream(this.customFields[field.name()]);
+          }
+        });
+        
+        this.fieldsLoading = false;
+        m.redraw();
+      })
+      .catch(() => {
+        this.fieldsLoading = false;
+        m.redraw();
+      });
   }
 
   className() {
@@ -28,40 +58,23 @@ export default class UserProfileModal extends Modal {
   }
 
   content() {
+    if (this.fieldsLoading) {
+      return (
+        <div className="Modal-body">
+          <div className="LoadingIndicator"></div>
+        </div>
+      );
+    }
+
     return (
       <div className="Modal-body">
         <div className="Form">
-          <div className="Form-group">
-            <label>自己紹介</label>
-            <textarea
-              className="FormControl"
-              value={this.introduction()}
-              oninput={(e) => this.introduction(e.target.value)}
-              rows="4"
-              placeholder="自己紹介を入力してください"
-            />
-          </div>
+          {/* カスタムフィールド */}
+          {this.fields.map(field => this.renderCustomField(field))}
           
+          {/* ソーシャルリンク */}
           <div className="Form-group">
-            <label>子育ての状況</label>
-            <textarea
-              className="FormControl"
-              value={this.childcareSituation()}
-              oninput={(e) => this.childcareSituation(e.target.value)}
-              rows="3"
-              placeholder="子育ての状況を入力してください"
-            />
-          </div>
-          
-          <div className="Form-group">
-            <label>介護の状況</label>
-            <textarea
-              className="FormControl"
-              value={this.careSituation()}
-              oninput={(e) => this.careSituation(e.target.value)}
-              rows="3"
-              placeholder="介護の状況を入力してください"
-            />
+            <h4>ソーシャルリンク</h4>
           </div>
           
           <div className="Form-group">
@@ -126,21 +139,74 @@ export default class UserProfileModal extends Modal {
     );
   }
 
+  renderCustomField(field) {
+    const stream = this.customFields[field.name()];
+    
+    if (!stream) {
+      return null;
+    }
+
+    return (
+      <div key={field.id()} className="Form-group">
+        <label>
+          {field.label()}
+          {field.required() && <span className="required">*</span>}
+        </label>
+        {field.type() === 'textarea' ? (
+          <textarea
+            className="FormControl"
+            value={stream()}
+            oninput={(e) => stream(e.target.value)}
+            rows="4"
+            placeholder={`${field.label()}を入力してください`}
+            required={field.required()}
+          />
+        ) : (
+          <input
+            className="FormControl"
+            type="text"
+            value={stream()}
+            oninput={(e) => stream(e.target.value)}
+            placeholder={`${field.label()}を入力してください`}
+            required={field.required()}
+          />
+        )}
+      </div>
+    );
+  }
+
   onsubmit(e) {
     e.preventDefault();
+    
+    // 必須フィールドのチェック
+    for (const field of this.fields) {
+      if (field.required() && field.isActive()) {
+        const stream = this.customFields[field.name()];
+        if (!stream || !stream().trim()) {
+          alert(`${field.label()}は必須項目です。`);
+          return;
+        }
+      }
+    }
     
     this.loading = true;
     m.redraw();
     
+    const customFieldsData = {};
+    for (const field of this.fields) {
+      const stream = this.customFields[field.name()];
+      if (stream) {
+        customFieldsData[field.name()] = stream();
+      }
+    }
+    
     const data = {
       userId: app.session.user.id(),
-      introduction: this.introduction(),
-      childcareSituation: this.childcareSituation(),
-      careSituation: this.careSituation(),
       facebookUrl: this.facebookUrl(),
       xUrl: this.xUrl(),
       instagramUrl: this.instagramUrl(),
-      isVisible: this.isVisible()
+      isVisible: this.isVisible(),
+      customFields: customFieldsData
     };
     
     app.store.createRecord('user-profiles')

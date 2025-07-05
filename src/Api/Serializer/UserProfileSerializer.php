@@ -16,18 +16,26 @@ class UserProfileSerializer extends AbstractSerializer
             return [];
         }
         
-        return [
+        $attributes = [
             'userId' => $userProfile->user_id,
-            'introduction' => $userProfile->introduction,
-            'childcareSituation' => $userProfile->childcare_situation,
-            'careSituation' => $userProfile->care_situation,
             'facebookUrl' => $userProfile->facebook_url,
             'xUrl' => $userProfile->x_url,
             'instagramUrl' => $userProfile->instagram_url,
             'isVisible' => $userProfile->is_visible,
             'createdAt' => $this->formatDate($userProfile->created_at),
-            'updatedAt' => $this->formatDate($userProfile->updated_at)
+            'updatedAt' => $this->formatDate($userProfile->updated_at),
+            'customFields' => []
         ];
+        
+        // カスタムフィールドの値を取得
+        $userProfile->load('fieldValues.field');
+        foreach ($userProfile->fieldValues as $fieldValue) {
+            if ($fieldValue->field) {
+                $attributes['customFields'][$fieldValue->field->name] = $fieldValue->value;
+            }
+        }
+        
+        return $attributes;
     }
     
     protected function user($userProfile)

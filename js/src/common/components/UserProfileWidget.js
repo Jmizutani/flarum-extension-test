@@ -7,9 +7,12 @@ export default class UserProfileWidget extends Component {
     super.oninit(vnode);
     this.user = this.attrs.user;
     this.profile = null;
+    this.fields = [];
     this.loading = true;
+    this.fieldsLoading = true;
     
     this.loadProfile();
+    this.loadFields();
   }
 
   loadProfile() {
@@ -25,8 +28,21 @@ export default class UserProfileWidget extends Component {
       });
   }
 
+  loadFields() {
+    app.store.find('profile-fields')
+      .then(fields => {
+        this.fields = fields.sort((a, b) => a.sortOrder() - b.sortOrder());
+        this.fieldsLoading = false;
+        m.redraw();
+      })
+      .catch(() => {
+        this.fieldsLoading = false;
+        m.redraw();
+      });
+  }
+
   view() {
-    if (this.loading) {
+    if (this.loading || this.fieldsLoading) {
       return <div className="UserProfileWidget">読み込み中...</div>;
     }
 
@@ -49,27 +65,10 @@ export default class UserProfileWidget extends Component {
         
         {canView && this.profile ? (
           <div className="UserProfileWidget-content">
-            {this.profile.introduction() && (
-              <div className="UserProfileWidget-section">
-                <h4>自己紹介</h4>
-                <p>{this.profile.introduction()}</p>
-              </div>
-            )}
+            {/* カスタムフィールドの表示 */}
+            {this.renderCustomFields()}
             
-            {this.profile.childcareSituation() && (
-              <div className="UserProfileWidget-section">
-                <h4>子育ての状況</h4>
-                <p>{this.profile.childcareSituation()}</p>
-              </div>
-            )}
-            
-            {this.profile.careSituation() && (
-              <div className="UserProfileWidget-section">
-                <h4>介護の状況</h4>
-                <p>{this.profile.careSituation()}</p>
-              </div>
-            )}
-            
+            {/* ソーシャルリンク */}
             {(this.profile.facebookUrl() || this.profile.xUrl() || this.profile.instagramUrl()) && (
               <div className="UserProfileWidget-section">
                 <h4>ソーシャルリンク</h4>
@@ -120,5 +119,27 @@ export default class UserProfileWidget extends Component {
         )}
       </div>
     );
+  }
+
+  renderCustomFields() {
+    if (!this.profile.customFields) {
+      return null;
+    }
+
+    const customFields = this.profile.customFields();
+    const sections = [];
+
+    this.fields.forEach(field => {
+      if (field.isActive() && customFields[field.name()]) {
+        sections.push(
+          <div key={field.id()} className="UserProfileWidget-section">
+            <h4>{field.label()}</h4>
+            <p>{customFields[field.name()]}</p>
+          </div>
+        );
+      }
+    });
+
+    return sections;
   }
 }

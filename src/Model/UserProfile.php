@@ -11,9 +11,6 @@ class UserProfile extends AbstractModel
     
     protected $fillable = [
         'user_id',
-        'introduction',
-        'childcare_situation',
-        'care_situation',
         'facebook_url',
         'x_url',
         'instagram_url',
@@ -27,5 +24,48 @@ class UserProfile extends AbstractModel
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    
+    public function fieldValues()
+    {
+        return $this->hasMany(ProfileFieldValue::class, 'user_id');
+    }
+    
+    public function getFieldValue($fieldName)
+    {
+        $fieldValue = $this->fieldValues()
+            ->whereHas('field', function ($query) use ($fieldName) {
+                $query->where('name', $fieldName);
+            })
+            ->first();
+            
+        return $fieldValue ? $fieldValue->value : null;
+    }
+    
+    public function setFieldValue($fieldName, $value)
+    {
+        $field = \Junya\FlarumUserProfile\Model\ProfileField::where('name', $fieldName)->first();
+        
+        if (!$field) {
+            return;
+        }
+        
+        $fieldValue = $this->fieldValues()
+            ->where('field_id', $field->id)
+            ->first();
+            
+        if ($fieldValue) {
+            if ($value === null || $value === '') {
+                $fieldValue->delete();
+            } else {
+                $fieldValue->update(['value' => $value]);
+            }
+        } else if ($value !== null && $value !== '') {
+            \Junya\FlarumUserProfile\Model\ProfileFieldValue::create([
+                'user_id' => $this->user_id,
+                'field_id' => $field->id,
+                'value' => $value
+            ]);
+        }
     }
 }
