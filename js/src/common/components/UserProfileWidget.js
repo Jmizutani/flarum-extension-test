@@ -133,20 +133,15 @@ export default class UserProfileWidget extends Component {
     }
 
     const customFields = this.profile.customFields();
-    const sections = [];
-
-    this.fields.forEach(field => {
-      if (field.isActive() && customFields && customFields[field.name()]) {
-        sections.push(
-          <div key={field.id()} className="UserProfileWidget-section">
-            <h4>{field.label()}</h4>
-            <p>{customFields[field.name()]}</p>
-          </div>
-        );
-      }
-    });
-
-    return sections;
+    
+    return this.fields
+      .filter(field => field.isActive() && customFields && customFields[field.name()])
+      .map(field => (
+        <div key={field.id()} className="UserProfileWidget-section">
+          <h4>{field.label()}</h4>
+          <p>{customFields[field.name()]}</p>
+        </div>
+      ));
   }
 
   renderSocialLinks() {
@@ -170,29 +165,30 @@ export default class UserProfileWidget extends Component {
       <div className="UserProfileWidget-section">
         <h4>ソーシャルリンク</h4>
         <div className="UserProfileWidget-socialLinks">
-          {this.socialLinks.map(socialLink => {
-            const value = socialLinkValues[socialLink.name()];
-            if (!value || !socialLink.isActive()) {
-              return null;
-            }
-
-            return (
-              <a 
-                key={socialLink.id()}
-                href={value} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="UserProfileWidget-socialLink"
-                title={socialLink.label()}
-              >
-                <img 
-                  src={socialLink.iconUrl()} 
-                  alt={socialLink.label()} 
-                  className="UserProfileWidget-socialIcon"
-                />
-              </a>
-            );
-          })}
+          {this.socialLinks
+            .filter(socialLink => {
+              const value = socialLinkValues[socialLink.name()];
+              return value && socialLink.isActive();
+            })
+            .map(socialLink => {
+              const value = socialLinkValues[socialLink.name()];
+              return (
+                <a 
+                  key={socialLink.id()}
+                  href={value} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="UserProfileWidget-socialLink"
+                  title={socialLink.label()}
+                >
+                  <img 
+                    src={socialLink.iconUrl()} 
+                    alt={socialLink.label()} 
+                    className="UserProfileWidget-socialIcon"
+                  />
+                </a>
+              );
+            })}
         </div>
       </div>
     );
