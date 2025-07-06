@@ -1,5 +1,5 @@
 {
-  "name": "flarum-user-profile",
+  "name": "user-profile",
   "version": "1.0.0",
   "description": "User profile extension for Flarum",
   "main": "index.js",
