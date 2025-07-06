@@ -9,12 +9,6 @@ app.initializers.add('junya-user-profile', () => {
   
   app.extensionData
     .for('junya-user-profile')
-    .registerSetting({
-      setting: 'user-profile-enabled',
-      label: 'プロフィール機能を有効にする',
-      type: 'boolean',
-      default: true
-    })
     .registerSetting(function () {
       return <ProfileFieldsPage />;
     });

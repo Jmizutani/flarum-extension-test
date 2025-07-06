@@ -32,7 +32,4 @@ return [
         ->relationship('userProfile', function ($user) {
             return $user->hasOne(\Junya\UserProfile\Model\UserProfile::class, 'user_id');
         }),
-    
-    (new Extend\Settings())
-        ->default('user-profile-enabled', true),
 ];
