@@ -32,4 +32,7 @@ return [
         ->relationship('userProfile', function ($user) {
             return $user->hasOne(\Junya\FlarumUserProfile\Model\UserProfile::class, 'user_id');
         }),
+    
+    (new Extend\Settings())
+        ->default('user-profile-enabled', true),
 ];
