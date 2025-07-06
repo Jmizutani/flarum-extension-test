@@ -6,9 +6,6 @@ use Illuminate\Database\Schema\Blueprint;
 return Migration::createTable('user_profiles', function (Blueprint $table) {
     $table->increments('id');
     $table->integer('user_id')->unsigned();
-    $table->string('facebook_url')->nullable();
-    $table->string('x_url')->nullable();
-    $table->string('instagram_url')->nullable();
     $table->boolean('is_visible')->default(true);
     $table->timestamps();
     

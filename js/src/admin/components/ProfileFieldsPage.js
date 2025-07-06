@@ -2,6 +2,7 @@ import Component from 'flarum/common/Component';
 import Button from 'flarum/common/components/Button';
 import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
 import ProfileFieldModal from './ProfileFieldModal';
+import SocialLinksSection from './SocialLinksSection';
 
 export default class ProfileFieldsPage extends Component {
   oninit(vnode) {
@@ -42,30 +43,34 @@ export default class ProfileFieldsPage extends Component {
     }
 
     return (
-      <div className="Form-group">
-        <label>プロフィールフィールド管理</label>
-        <div className="helpText" style="margin-bottom: 15px;">
-          カスタムプロフィールフィールドを作成・管理できます。
+      <div>
+        <div className="Form-group">
+          <label>プロフィールフィールド管理</label>
+          <div className="helpText" style="margin-bottom: 15px;">
+            カスタムプロフィールフィールドを作成・管理できます。
+          </div>
+          
+          <div style="margin-bottom: 15px;">
+            <Button
+              className="Button Button--primary"
+              onclick={() => this.showModal()}
+            >
+              新しいフィールドを追加
+            </Button>
+          </div>
+          
+          {this.fields.length === 0 ? (
+            <div className="helpText">
+              プロフィールフィールドが設定されていません。
+            </div>
+          ) : (
+            <div>
+              {this.fields.map(field => this.fieldItem(field))}
+            </div>
+          )}
         </div>
         
-        <div style="margin-bottom: 15px;">
-          <Button
-            className="Button Button--primary"
-            onclick={() => this.showModal()}
-          >
-            新しいフィールドを追加
-          </Button>
-        </div>
-        
-        {this.fields.length === 0 ? (
-          <div className="helpText">
-            プロフィールフィールドが設定されていません。
-          </div>
-        ) : (
-          <div>
-            {this.fields.map(field => this.fieldItem(field))}
-          </div>
-        )}
+        <SocialLinksSection />
       </div>
     );
   }

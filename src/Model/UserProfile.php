@@ -11,9 +11,6 @@ class UserProfile extends AbstractModel
     
     protected $fillable = [
         'user_id',
-        'facebook_url',
-        'x_url',
-        'instagram_url',
         'is_visible'
     ];
     
@@ -29,6 +26,11 @@ class UserProfile extends AbstractModel
     public function fieldValues()
     {
         return $this->hasMany(ProfileFieldValue::class, 'user_id');
+    }
+    
+    public function socialLinks()
+    {
+        return $this->hasMany(UserSocialLink::class, 'user_id');
     }
     
     public function getFieldValue($fieldName)
@@ -64,6 +66,44 @@ class UserProfile extends AbstractModel
             \Junya\UserProfile\Model\ProfileFieldValue::create([
                 'user_id' => $this->user_id,
                 'field_id' => $field->id,
+                'value' => $value
+            ]);
+        }
+    }
+    
+    public function getSocialLinkValue($socialLinkName)
+    {
+        $userSocialLink = $this->socialLinks()
+            ->whereHas('socialLink', function ($query) use ($socialLinkName) {
+                $query->where('name', $socialLinkName);
+            })
+            ->first();
+            
+        return $userSocialLink ? $userSocialLink->value : null;
+    }
+    
+    public function setSocialLinkValue($socialLinkName, $value)
+    {
+        $socialLink = SocialLink::where('name', $socialLinkName)->first();
+        
+        if (!$socialLink) {
+            return;
+        }
+        
+        $userSocialLink = $this->socialLinks()
+            ->where('social_link_id', $socialLink->id)
+            ->first();
+            
+        if ($userSocialLink) {
+            if ($value === null || $value === '') {
+                $userSocialLink->delete();
+            } else {
+                $userSocialLink->update(['value' => $value]);
+            }
+        } else if ($value !== null && $value !== '') {
+            UserSocialLink::create([
+                'user_id' => $this->user_id,
+                'social_link_id' => $socialLink->id,
                 'value' => $value
             ]);
         }
