@@ -14,6 +14,8 @@ class ListProfileFieldsController extends AbstractListController
     
     protected function data(ServerRequestInterface $request, Document $document)
     {
+        $request->getAttribute('actor')->assertAdmin();
+        
         return ProfileField::where('is_active', true)
             ->orderBy('sort_order')
             ->get();
