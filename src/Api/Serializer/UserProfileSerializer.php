@@ -18,9 +18,9 @@ class UserProfileSerializer extends AbstractSerializer
         
         $attributes = [
             'userId' => $userProfile->user_id,
-            'facebookUrl' => $userProfile->facebook_url,
-            'xUrl' => $userProfile->x_url,
-            'instagramUrl' => $userProfile->instagram_url,
+            'facebookUrl' => $userProfile->getSocialLinkValue('facebook'),
+            'xUrl' => $userProfile->getSocialLinkValue('x'),
+            'instagramUrl' => $userProfile->getSocialLinkValue('instagram'),
             'isVisible' => $userProfile->is_visible,
             'createdAt' => $userProfile->created_at ? $this->formatDate($userProfile->created_at) : null,
             'updatedAt' => $userProfile->updated_at ? $this->formatDate($userProfile->updated_at) : null,

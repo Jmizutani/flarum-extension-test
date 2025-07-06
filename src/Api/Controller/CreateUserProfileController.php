@@ -29,19 +29,24 @@ class CreateUserProfileController extends AbstractCreateController
         
         if ($profile) {
             $profile->update([
-                'facebook_url' => $data['facebookUrl'] ?? null,
-                'x_url' => $data['xUrl'] ?? null,
-                'instagram_url' => $data['instagramUrl'] ?? null,
                 'is_visible' => $data['isVisible'] ?? true
             ]);
         } else {
             $profile = UserProfile::create([
                 'user_id' => $userId,
-                'facebook_url' => $data['facebookUrl'] ?? null,
-                'x_url' => $data['xUrl'] ?? null,
-                'instagram_url' => $data['instagramUrl'] ?? null,
                 'is_visible' => $data['isVisible'] ?? true
             ]);
+        }
+        
+        // ソーシャルリンクの処理
+        if (isset($data['facebookUrl'])) {
+            $profile->setSocialLinkValue('facebook', $data['facebookUrl']);
+        }
+        if (isset($data['xUrl'])) {
+            $profile->setSocialLinkValue('x', $data['xUrl']);
+        }
+        if (isset($data['instagramUrl'])) {
+            $profile->setSocialLinkValue('instagram', $data['instagramUrl']);
         }
         
         // カスタムフィールドの処理
