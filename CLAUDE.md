@@ -69,6 +69,12 @@ php flarum cache:clear
 - `GET /api/user-profiles?userId={id}` - Retrieve user profile with privacy checks
 - `POST /api/user-profiles` - Create/update user profile (includes customFields object)
 
+### Social Links (Admin)
+- `GET /api/social-links` - List all social link definitions
+- `POST /api/social-links` - Create new social link
+- `PATCH /api/social-links/{id}` - Update social link
+- `DELETE /api/social-links/{id}` - Delete social link
+
 ## Key Implementation Details
 
 ### Dynamic Field Rendering
@@ -86,3 +92,9 @@ php flarum cache:clear
 - Profile viewing: Public (if visible), owner, or admin
 - Profile editing: Owner only
 - Privacy toggle affects entire profile visibility
+
+# important-instruction-reminders
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.

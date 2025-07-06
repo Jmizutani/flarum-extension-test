@@ -2,6 +2,7 @@
 
 use Flarum\Database\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 
 return [
     'up' => function () {
