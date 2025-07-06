@@ -218,7 +218,15 @@ export default class UserProfileModal extends Modal {
     
     app.store.createRecord('user-profiles')
       .save(data)
-      .then(() => {
+      .then((savedProfile) => {
+        // プロフィールをストアに保存
+        app.store.pushObject(savedProfile);
+        
+        // コールバックがある場合は実行
+        if (this.attrs.onSave) {
+          this.attrs.onSave(savedProfile);
+        }
+        
         this.hide();
         m.redraw();
       })

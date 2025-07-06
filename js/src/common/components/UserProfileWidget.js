@@ -8,11 +8,14 @@ export default class UserProfileWidget extends Component {
     this.user = this.attrs.user;
     this.profile = null;
     this.fields = [];
+    this.socialLinks = [];
     this.loading = true;
     this.fieldsLoading = true;
+    this.socialLinksLoading = true;
     
     this.loadProfile();
     this.loadFields();
+    this.loadSocialLinks();
   }
 
   loadProfile() {
@@ -41,8 +44,26 @@ export default class UserProfileWidget extends Component {
       });
   }
 
+  loadSocialLinks() {
+    app.store.find('social-links')
+      .then(socialLinks => {
+        this.socialLinks = socialLinks.sort((a, b) => a.sortOrder() - b.sortOrder());
+        this.socialLinksLoading = false;
+        m.redraw();
+      })
+      .catch(() => {
+        this.socialLinksLoading = false;
+        m.redraw();
+      });
+  }
+
+  refreshProfile(newProfile) {
+    this.profile = newProfile;
+    m.redraw();
+  }
+
   view() {
-    if (this.loading || this.fieldsLoading) {
+    if (this.loading || this.fieldsLoading || this.socialLinksLoading) {
       return <div className="UserProfileWidget">読み込み中...</div>;
     }
 
@@ -56,7 +77,10 @@ export default class UserProfileWidget extends Component {
           {isOwnProfile && (
             <Button
               className="Button Button--primary Button--small"
-              onclick={() => app.modal.show(UserProfileModal, { profile: this.profile })}
+              onclick={() => app.modal.show(UserProfileModal, { 
+                profile: this.profile,
+                onSave: (newProfile) => this.refreshProfile(newProfile)
+              })}
             >
               編集
             </Button>
@@ -69,28 +93,7 @@ export default class UserProfileWidget extends Component {
             {this.renderCustomFields()}
             
             {/* ソーシャルリンク */}
-            {(this.profile.facebookUrl() || this.profile.xUrl() || this.profile.instagramUrl()) && (
-              <div className="UserProfileWidget-section">
-                <h4>ソーシャルリンク</h4>
-                <div className="UserProfileWidget-socialLinks">
-                  {this.profile.facebookUrl() && (
-                    <a href={this.profile.facebookUrl()} target="_blank" rel="noopener noreferrer">
-                      Facebook
-                    </a>
-                  )}
-                  {this.profile.xUrl() && (
-                    <a href={this.profile.xUrl()} target="_blank" rel="noopener noreferrer">
-                      X (Twitter)
-                    </a>
-                  )}
-                  {this.profile.instagramUrl() && (
-                    <a href={this.profile.instagramUrl()} target="_blank" rel="noopener noreferrer">
-                      Instagram
-                    </a>
-                  )}
-                </div>
-              </div>
-            )}
+            {this.renderSocialLinks()}
             
             {!this.profile.isVisible() && isOwnProfile && (
               <div className="UserProfileWidget-section">
@@ -105,7 +108,10 @@ export default class UserProfileWidget extends Component {
                 <p>プロフィールが設定されていません。</p>
                 <Button
                   className="Button Button--primary"
-                  onclick={() => app.modal.show(UserProfileModal, { profile: null })}
+                  onclick={() => app.modal.show(UserProfileModal, { 
+                    profile: null,
+                    onSave: (newProfile) => this.refreshProfile(newProfile)
+                  })}
                 >
                   プロフィールを作成
                 </Button>
@@ -141,5 +147,54 @@ export default class UserProfileWidget extends Component {
     });
 
     return sections;
+  }
+
+  renderSocialLinks() {
+    if (!this.profile) {
+      return null;
+    }
+
+    const socialLinkValues = {
+      facebook: this.profile.facebookUrl(),
+      x: this.profile.xUrl(),
+      instagram: this.profile.instagramUrl()
+    };
+
+    const hasAnyLink = Object.values(socialLinkValues).some(value => value);
+    
+    if (!hasAnyLink) {
+      return null;
+    }
+
+    return (
+      <div className="UserProfileWidget-section">
+        <h4>ソーシャルリンク</h4>
+        <div className="UserProfileWidget-socialLinks">
+          {this.socialLinks.map(socialLink => {
+            const value = socialLinkValues[socialLink.name()];
+            if (!value || !socialLink.isActive()) {
+              return null;
+            }
+
+            return (
+              <a 
+                key={socialLink.id()}
+                href={value} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="UserProfileWidget-socialLink"
+                title={socialLink.label()}
+              >
+                <img 
+                  src={socialLink.iconUrl()} 
+                  alt={socialLink.label()} 
+                  className="UserProfileWidget-socialIcon"
+                />
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    );
   }
 }
