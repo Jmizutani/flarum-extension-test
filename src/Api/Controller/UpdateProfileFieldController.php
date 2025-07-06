@@ -1,12 +1,12 @@
 <?php
 
-namespace Junya\FlarumUserProfile\Api\Controller;
+namespace Junya\UserProfile\Api\Controller;
 
 use Flarum\Api\Controller\AbstractShowController;
 use Flarum\Http\RequestUtil;
 use Flarum\User\Exception\PermissionDeniedException;
-use Junya\FlarumUserProfile\Api\Serializer\ProfileFieldSerializer;
-use Junya\FlarumUserProfile\Model\ProfileField;
+use Junya\UserProfile\Api\Serializer\ProfileFieldSerializer;
+use Junya\UserProfile\Model\ProfileField;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 

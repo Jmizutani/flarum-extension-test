@@ -1,6 +1,6 @@
 <?php
 
-namespace Junya\FlarumUserProfile\Model;
+namespace Junya\UserProfile\Model;
 
 use Flarum\Database\AbstractModel;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Junya\FlarumUserProfile\Api\Serializer;
+namespace Junya\UserProfile\Api\Serializer;
 
 use Flarum\Api\Serializer\AbstractSerializer;
 use Flarum\Api\Serializer\UserSerializer;
-use Junya\FlarumUserProfile\Model\UserProfile;
+use Junya\UserProfile\Model\UserProfile;
 
 class UserProfileSerializer extends AbstractSerializer
 {

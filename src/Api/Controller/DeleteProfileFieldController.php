@@ -1,11 +1,11 @@
 <?php
 
-namespace Junya\FlarumUserProfile\Api\Controller;
+namespace Junya\UserProfile\Api\Controller;
 
 use Flarum\Api\Controller\AbstractDeleteController;
 use Flarum\Http\RequestUtil;
 use Flarum\User\Exception\PermissionDeniedException;
-use Junya\FlarumUserProfile\Model\ProfileField;
+use Junya\UserProfile\Model\ProfileField;
 use Psr\Http\Message\ServerRequestInterface;
 
 class DeleteProfileFieldController extends AbstractDeleteController

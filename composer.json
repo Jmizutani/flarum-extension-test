@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Junya\\FlarumUserProfile\\": "src/"
+            "Junya\\UserProfile\\": "src/"
         }
     },
     "minimum-stability": "dev",

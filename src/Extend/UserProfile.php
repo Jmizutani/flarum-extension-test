@@ -1,9 +1,9 @@
 <?php
 
-namespace Junya\FlarumUserProfile\Extend;
+namespace Junya\UserProfile\Extend;
 
 use Flarum\User\User;
-use Junya\FlarumUserProfile\Model\UserProfile as UserProfileModel;
+use Junya\UserProfile\Model\UserProfile as UserProfileModel;
 
 class UserProfile
 {

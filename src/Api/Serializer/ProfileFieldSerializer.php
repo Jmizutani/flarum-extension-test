@@ -1,9 +1,9 @@
 <?php
 
-namespace Junya\FlarumUserProfile\Api\Serializer;
+namespace Junya\UserProfile\Api\Serializer;
 
 use Flarum\Api\Serializer\AbstractSerializer;
-use Junya\FlarumUserProfile\Model\ProfileField;
+use Junya\UserProfile\Model\ProfileField;
 
 class ProfileFieldSerializer extends AbstractSerializer
 {

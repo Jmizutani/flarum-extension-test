@@ -1,13 +1,13 @@
 <?php
 
 use Flarum\Extend;
-use Junya\FlarumUserProfile\Api\Controller\CreateUserProfileController;
-use Junya\FlarumUserProfile\Api\Controller\ShowUserProfileController;
-use Junya\FlarumUserProfile\Api\Controller\ListProfileFieldsController;
-use Junya\FlarumUserProfile\Api\Controller\CreateProfileFieldController;
-use Junya\FlarumUserProfile\Api\Controller\UpdateProfileFieldController;
-use Junya\FlarumUserProfile\Api\Controller\DeleteProfileFieldController;
-use Junya\FlarumUserProfile\Extend\UserProfile;
+use Junya\UserProfile\Api\Controller\CreateUserProfileController;
+use Junya\UserProfile\Api\Controller\ShowUserProfileController;
+use Junya\UserProfile\Api\Controller\ListProfileFieldsController;
+use Junya\UserProfile\Api\Controller\CreateProfileFieldController;
+use Junya\UserProfile\Api\Controller\UpdateProfileFieldController;
+use Junya\UserProfile\Api\Controller\DeleteProfileFieldController;
+use Junya\UserProfile\Extend\UserProfile;
 
 return [
     (new Extend\Frontend('forum'))
@@ -30,7 +30,7 @@ return [
     
     (new Extend\Model('Flarum\User\User'))
         ->relationship('userProfile', function ($user) {
-            return $user->hasOne(\Junya\FlarumUserProfile\Model\UserProfile::class, 'user_id');
+            return $user->hasOne(\Junya\UserProfile\Model\UserProfile::class, 'user_id');
         }),
     
     (new Extend\Settings())
