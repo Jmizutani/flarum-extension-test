@@ -20,7 +20,9 @@ class ProfileField extends AbstractModel
     protected $casts = [
         'required' => 'boolean',
         'is_active' => 'boolean',
-        'sort_order' => 'integer'
+        'sort_order' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
     
     public function values()
