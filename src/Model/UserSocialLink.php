@@ -9,6 +9,8 @@ class UserSocialLink extends AbstractModel
 {
     protected $table = 'user_social_links';
     
+    public $timestamps = true;
+    
     protected $fillable = [
         'user_id',
         'social_link_id',

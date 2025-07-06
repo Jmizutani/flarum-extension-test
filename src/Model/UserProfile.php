@@ -9,6 +9,8 @@ class UserProfile extends AbstractModel
 {
     protected $table = 'user_profiles';
     
+    public $timestamps = true;
+    
     protected $fillable = [
         'user_id',
         'is_visible'

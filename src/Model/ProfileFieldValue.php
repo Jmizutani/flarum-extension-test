@@ -9,6 +9,8 @@ class ProfileFieldValue extends AbstractModel
 {
     protected $table = 'profile_field_values';
     
+    public $timestamps = true;
+    
     protected $fillable = [
         'user_id',
         'field_id',

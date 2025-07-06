@@ -9,18 +9,25 @@ export default class UserProfileModal extends Modal {
     
     const profile = this.attrs.profile || {};
     
-    this.facebookUrl = Stream(profile.facebookUrl || '');
-    this.xUrl = Stream(profile.xUrl || '');
-    this.instagramUrl = Stream(profile.instagramUrl || '');
-    this.isVisible = Stream(profile.isVisible !== undefined ? profile.isVisible : true);
+    // プロフィールが関数の場合は実行して値を取得
+    const facebookUrl = typeof profile.facebookUrl === 'function' ? profile.facebookUrl() : profile.facebookUrl;
+    const xUrl = typeof profile.xUrl === 'function' ? profile.xUrl() : profile.xUrl;
+    const instagramUrl = typeof profile.instagramUrl === 'function' ? profile.instagramUrl() : profile.instagramUrl;
+    const isVisible = typeof profile.isVisible === 'function' ? profile.isVisible() : profile.isVisible;
+    const customFields = typeof profile.customFields === 'function' ? profile.customFields() : profile.customFields;
+    
+    this.facebookUrl = Stream(facebookUrl || '');
+    this.xUrl = Stream(xUrl || '');
+    this.instagramUrl = Stream(instagramUrl || '');
+    this.isVisible = Stream(isVisible !== undefined ? isVisible : true);
     this.loading = false;
     this.fieldsLoading = true;
     this.fields = [];
     this.customFields = {};
     
     // カスタムフィールドの初期化
-    if (profile.customFields) {
-      this.customFields = { ...profile.customFields };
+    if (customFields) {
+      this.customFields = { ...customFields };
     }
     
     this.loadFields();
