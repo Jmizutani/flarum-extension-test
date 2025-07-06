@@ -22,8 +22,8 @@ class UserProfileSerializer extends AbstractSerializer
             'xUrl' => $userProfile->x_url,
             'instagramUrl' => $userProfile->instagram_url,
             'isVisible' => $userProfile->is_visible,
-            'createdAt' => $this->formatDate($userProfile->created_at),
-            'updatedAt' => $this->formatDate($userProfile->updated_at),
+            'createdAt' => $userProfile->created_at ? $this->formatDate(\Carbon\Carbon::parse($userProfile->created_at)) : null,
+            'updatedAt' => $userProfile->updated_at ? $this->formatDate(\Carbon\Carbon::parse($userProfile->updated_at)) : null,
             'customFields' => []
         ];
         

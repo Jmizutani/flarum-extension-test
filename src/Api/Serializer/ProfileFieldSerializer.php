@@ -22,8 +22,8 @@ class ProfileFieldSerializer extends AbstractSerializer
             'required' => $field->required,
             'sortOrder' => $field->sort_order,
             'isActive' => $field->is_active,
-            'createdAt' => $field->created_at ? $this->formatDate($field->created_at) : null,
-            'updatedAt' => $field->updated_at ? $this->formatDate($field->updated_at) : null
+            'createdAt' => $field->created_at ? $this->formatDate(\Carbon\Carbon::parse($field->created_at)) : null,
+            'updatedAt' => $field->updated_at ? $this->formatDate(\Carbon\Carbon::parse($field->updated_at)) : null
         ];
     }
 }
