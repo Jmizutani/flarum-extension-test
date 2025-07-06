@@ -22,8 +22,8 @@ class SocialLinkSerializer extends AbstractSerializer
             'urlPattern' => $socialLink->url_pattern,
             'sortOrder' => $socialLink->sort_order,
             'isActive' => $socialLink->is_active,
-            'createdAt' => $socialLink->created_at ? $this->formatDate(\Carbon\Carbon::parse($socialLink->created_at)) : null,
-            'updatedAt' => $socialLink->updated_at ? $this->formatDate(\Carbon\Carbon::parse($socialLink->updated_at)) : null
+            'createdAt' => $socialLink->created_at ? $this->formatDate($socialLink->created_at) : null,
+            'updatedAt' => $socialLink->updated_at ? $this->formatDate($socialLink->updated_at) : null
         ];
     }
 }

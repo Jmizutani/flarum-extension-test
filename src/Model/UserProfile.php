@@ -15,7 +15,9 @@ class UserProfile extends AbstractModel
     ];
     
     protected $casts = [
-        'is_visible' => 'boolean'
+        'is_visible' => 'boolean',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
     
     public function user()

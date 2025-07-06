@@ -19,6 +19,8 @@ class SocialLink extends AbstractModel
     
     protected $casts = [
         'is_active' => 'boolean',
-        'sort_order' => 'integer'
+        'sort_order' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
 }
