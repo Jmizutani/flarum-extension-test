@@ -44,7 +44,7 @@ class UserProfile extends AbstractModel
     
     public function setFieldValue($fieldName, $value)
     {
-        $field = \Junya\FlarumUserProfile\Model\ProfileField::where('name', $fieldName)->first();
+        $field = \Junya\UserProfile\Model\ProfileField::where('name', $fieldName)->first();
         
         if (!$field) {
             return;
@@ -61,7 +61,7 @@ class UserProfile extends AbstractModel
                 $fieldValue->update(['value' => $value]);
             }
         } else if ($value !== null && $value !== '') {
-            \Junya\FlarumUserProfile\Model\ProfileFieldValue::create([
+            \Junya\UserProfile\Model\ProfileFieldValue::create([
                 'user_id' => $this->user_id,
                 'field_id' => $field->id,
                 'value' => $value
