@@ -7,10 +7,6 @@ use Junya\UserProfile\Api\Controller\ListProfileFieldsController;
 use Junya\UserProfile\Api\Controller\CreateProfileFieldController;
 use Junya\UserProfile\Api\Controller\UpdateProfileFieldController;
 use Junya\UserProfile\Api\Controller\DeleteProfileFieldController;
-use Junya\UserProfile\Api\Controller\ListSocialLinksController;
-use Junya\UserProfile\Api\Controller\CreateSocialLinkController;
-use Junya\UserProfile\Api\Controller\UpdateSocialLinkController;
-use Junya\UserProfile\Api\Controller\DeleteSocialLinkController;
 use Junya\UserProfile\Extend\UserProfile;
 
 return [
@@ -30,11 +26,7 @@ return [
         ->get('/profile-fields', 'profile-fields.index', ListProfileFieldsController::class)
         ->post('/profile-fields', 'profile-fields.create', CreateProfileFieldController::class)
         ->patch('/profile-fields/{id}', 'profile-fields.update', UpdateProfileFieldController::class)
-        ->delete('/profile-fields/{id}', 'profile-fields.delete', DeleteProfileFieldController::class)
-        ->get('/social-links', 'social-links.index', ListSocialLinksController::class)
-        ->post('/social-links', 'social-links.create', CreateSocialLinkController::class)
-        ->patch('/social-links/{id}', 'social-links.update', UpdateSocialLinkController::class)
-        ->delete('/social-links/{id}', 'social-links.delete', DeleteSocialLinkController::class),
+        ->delete('/profile-fields/{id}', 'profile-fields.delete', DeleteProfileFieldController::class),
     
     (new Extend\Model('Flarum\User\User'))
         ->relationship('userProfile', function ($user) {
