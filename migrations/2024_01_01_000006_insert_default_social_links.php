@@ -2,12 +2,14 @@
 
 use Flarum\Database\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Schema\Builder;
 
 return [
-    'up' => function () {
+    'up' => function (Builder $schema) {
+        $connection = $schema->getConnection();
+        
         // Insert default social links
-        DB::table('social_links')->insert([
+        $connection->table('social_links')->insert([
             [
                 'name' => 'facebook',
                 'label' => 'Facebook',
@@ -15,8 +17,8 @@ return [
                 'url_pattern' => 'https://facebook.com/{username}',
                 'sort_order' => 1,
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now()
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now()
             ],
             [
                 'name' => 'x',
@@ -25,8 +27,8 @@ return [
                 'url_pattern' => 'https://x.com/{username}',
                 'sort_order' => 2,
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now()
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now()
             ],
             [
                 'name' => 'instagram',
@@ -35,13 +37,14 @@ return [
                 'url_pattern' => 'https://instagram.com/{username}',
                 'sort_order' => 3,
                 'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now()
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now()
             ]
         ]);
     },
     
-    'down' => function () {
-        DB::table('social_links')->whereIn('name', ['facebook', 'x', 'instagram'])->delete();
+    'down' => function (Builder $schema) {
+        $connection = $schema->getConnection();
+        $connection->table('social_links')->whereIn('name', ['facebook', 'x', 'instagram'])->delete();
     }
 ];
