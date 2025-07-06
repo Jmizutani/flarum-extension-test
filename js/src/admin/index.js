@@ -9,10 +9,7 @@ app.initializers.add('junya-flarum-user-profile', () => {
   
   app.extensionData
     .for('junya-flarum-user-profile')
-    .registerPage(ProfileFieldsPage);
-    
-  app.extensionData
-    .for('junya-flarum-user-profile')
+    .registerPage(ProfileFieldsPage)
     .registerSetting({
       setting: 'user-profile-enabled',
       label: 'プロフィール機能を有効にする',
