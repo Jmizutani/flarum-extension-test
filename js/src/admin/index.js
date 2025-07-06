@@ -3,12 +3,12 @@ import UserProfile from '../common/models/UserProfile';
 import ProfileField from '../common/models/ProfileField';
 import ProfileFieldsPage from './components/ProfileFieldsPage';
 
-app.initializers.add('junya-flarum-user-profile', () => {
+app.initializers.add('junya-user-profile', () => {
   app.store.models['user-profiles'] = UserProfile;
   app.store.models['profile-fields'] = ProfileField;
   
   app.extensionData
-    .for('junya-flarum-user-profile')
+    .for('junya-user-profile')
     .registerPage(ProfileFieldsPage)
     .registerSetting({
       setting: 'user-profile-enabled',

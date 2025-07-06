@@ -1,5 +1,5 @@
 {
-    "name": "junya/flarum-user-profile",
+    "name": "junya/user-profile",
     "description": "User profile extension for Flarum with custom fields, privacy settings, and social links",
     "type": "flarum-extension",
     "license": "MIT",

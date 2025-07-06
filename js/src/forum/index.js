@@ -5,7 +5,7 @@ import UserProfileWidget from '../common/components/UserProfileWidget';
 import { extend } from 'flarum/common/extend';
 import UserPage from 'flarum/forum/components/UserPage';
 
-app.initializers.add('junya-flarum-user-profile', () => {
+app.initializers.add('junya-user-profile', () => {
   app.store.models['user-profiles'] = UserProfile;
   app.store.models['profile-fields'] = ProfileField;
   
