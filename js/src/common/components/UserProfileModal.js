@@ -7,6 +7,10 @@ export default class UserProfileModal extends Modal {
   oninit(vnode) {
     super.oninit(vnode);
     
+    this.focusableElements = [];
+    this.firstFocusableElement = null;
+    this.lastFocusableElement = null;
+    
     const profile = this.attrs.profile || {};
     
     // プロフィールが関数の場合は実行して値を取得
@@ -101,56 +105,61 @@ export default class UserProfileModal extends Modal {
     return 'UserProfileModal Modal--large';
   }
 
+  oncreate(vnode) {
+    super.oncreate(vnode);
+    this.setupFocusManagement();
+  }
+
+  setupFocusManagement() {
+    // フォーカス可能な要素を取得
+    const modal = this.element;
+    if (modal) {
+      this.focusableElements = modal.querySelectorAll(
+        'input, textarea, button, select, [tabindex]:not([tabindex="-1"])'
+      );
+      
+      if (this.focusableElements.length > 0) {
+        this.firstFocusableElement = this.focusableElements[0];
+        this.lastFocusableElement = this.focusableElements[this.focusableElements.length - 1];
+        
+        // 最初の要素にフォーカス
+        setTimeout(() => {
+          if (this.firstFocusableElement) {
+            this.firstFocusableElement.focus();
+          }
+        }, 100);
+      }
+    }
+  }
+
+  onkeydown(e) {
+    if (e.key === 'Tab') {
+      // Tab キーでのフォーカス循環
+      if (e.shiftKey) {
+        // Shift + Tab
+        if (document.activeElement === this.firstFocusableElement) {
+          e.preventDefault();
+          this.lastFocusableElement?.focus();
+        }
+      } else {
+        // Tab
+        if (document.activeElement === this.lastFocusableElement) {
+          e.preventDefault();
+          this.firstFocusableElement?.focus();
+        }
+      }
+    }
+    
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      this.hide();
+    }
+  }
+
   title() {
     return 'プロフィール編集';
   }
 
-  oncreate(vnode) {
-    super.oncreate(vnode);
-    
-    // モーダルが開いたら最初のフォーカス可能な要素にフォーカスを移動
-    setTimeout(() => {
-      this.focusFirstElement(vnode.dom);
-    }, 100);
-    
-    // フォーカストラップを設定
-    this.trapFocus(vnode.dom);
-  }
-
-  focusFirstElement(container) {
-    const focusableElements = container.querySelectorAll(
-      'input:not([disabled]), textarea:not([disabled]), select:not([disabled]), button:not([disabled]), [tabindex]:not([tabindex="-1"])'
-    );
-    
-    if (focusableElements.length > 0) {
-      focusableElements[0].focus();
-    }
-  }
-
-  trapFocus(container) {
-    const focusableElements = container.querySelectorAll(
-      'input:not([disabled]), textarea:not([disabled]), select:not([disabled]), button:not([disabled]), [tabindex]:not([tabindex="-1"])'
-    );
-    
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-
-    container.addEventListener('keydown', (e) => {
-      if (e.key === 'Tab') {
-        if (e.shiftKey) {
-          if (document.activeElement === firstElement) {
-            e.preventDefault();
-            lastElement.focus();
-          }
-        } else {
-          if (document.activeElement === lastElement) {
-            e.preventDefault();
-            firstElement.focus();
-          }
-        }
-      }
-    });
-  }
 
   content() {
     if (this.fieldsLoading) {
@@ -162,7 +171,13 @@ export default class UserProfileModal extends Modal {
     }
 
     return (
-      <div className="Modal-body">
+      <div 
+        className="Modal-body"
+        role="dialog"
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+        onkeydown={this.onkeydown.bind(this)}
+      >
         <div className="Form">
           {/* カスタムフィールド */}
           {this.fields.map(field => this.renderCustomField(field))}
