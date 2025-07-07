@@ -156,10 +156,21 @@ export default class ProfileFieldModal extends Modal {
     let request;
     
     if (this.attrs.field) {
-      // 既存フィールドの更新 - pushAttributesを使用
-      const field = this.attrs.field;
-      field.pushAttributes(data);
-      request = field.save();
+      // 既存フィールドの更新 - 直接APIコールを使用
+      request = app.request({
+        method: 'PATCH',
+        url: app.forum.attribute('apiUrl') + '/profile-fields/' + this.attrs.field.id(),
+        body: {
+          data: {
+            type: 'profile-fields',
+            id: this.attrs.field.id(),
+            attributes: data
+          }
+        }
+      }).then(response => {
+        app.store.pushPayload(response);
+        return app.store.getById('profile-fields', this.attrs.field.id());
+      });
     } else {
       // 新規フィールドの作成
       request = app.store.createRecord('profile-fields').save(data);

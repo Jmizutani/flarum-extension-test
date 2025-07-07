@@ -132,9 +132,21 @@ export default class SocialLinkModal extends Modal {
     let promise;
     
     if (this.socialLink) {
-      // 既存ソーシャルリンクの更新 - pushAttributesを使用
-      this.socialLink.pushAttributes(data);
-      promise = this.socialLink.save();
+      // 既存ソーシャルリンクの更新 - 直接APIコールを使用
+      promise = app.request({
+        method: 'PATCH',
+        url: app.forum.attribute('apiUrl') + '/social-links/' + this.socialLink.id(),
+        body: {
+          data: {
+            type: 'social-links',
+            id: this.socialLink.id(),
+            attributes: data
+          }
+        }
+      }).then(response => {
+        app.store.pushPayload(response);
+        return app.store.getById('social-links', this.socialLink.id());
+      });
     } else {
       // 新規ソーシャルリンクの作成
       promise = app.store.createRecord('social-links').save(data);
