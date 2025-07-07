@@ -88,8 +88,8 @@ export default class SocialLinksSection extends Component {
             </div>
             <div style="font-size: 12px; color: #666;">
               <span>名前: {socialLink.name()}</span>
-              {socialLink.urlPattern() && (
-                <span style="margin-left: 15px;">パターン: {socialLink.urlPattern()}</span>
+              {socialLink.placeholder() && (
+                <span style="margin-left: 15px;">プレースホルダー: {socialLink.placeholder()}</span>
               )}
             </div>
           </div>
