@@ -121,7 +121,15 @@ export default class ProfileFieldsPage extends Component {
 
   deleteField(field) {
     if (confirm(`フィールド「${field.label()}」を削除してもよろしいですか？`)) {
-      field.delete()
+      m.request({
+        method: 'POST',
+        url: app.forum.attribute('apiUrl') + '/profile-fields/' + field.id() + '/delete',
+        headers: {
+          'Content-Type': 'application/vnd.api+json',
+          'X-CSRF-Token': app.session.csrfToken,
+          'X-HTTP-Method-Override': 'DELETE'
+        }
+      })
         .then(() => this.loadFields())
         .catch(error => {
           console.error('Delete error:', error);
