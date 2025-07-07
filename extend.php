@@ -29,11 +29,11 @@ return [
         ->get('/user-profiles', 'user-profiles.show', ShowUserProfileController::class)
         ->get('/profile-fields', 'profile-fields.index', ListProfileFieldsController::class)
         ->post('/profile-fields', 'profile-fields.create', CreateProfileFieldController::class)
-        ->post('/profile-fields/{id}', 'profile-fields.update', UpdateProfileFieldController::class)
+        ->post('/profile-fields/{id}/update', 'profile-fields.update', UpdateProfileFieldController::class)
         ->post('/profile-fields/{id}/delete', 'profile-fields.delete', DeleteProfileFieldController::class)
         ->get('/social-links', 'social-links.index', ListSocialLinksController::class)
         ->post('/social-links', 'social-links.create', CreateSocialLinkController::class)
-        ->post('/social-links/{id}', 'social-links.update', UpdateSocialLinkController::class)
+        ->post('/social-links/{id}/update', 'social-links.update', UpdateSocialLinkController::class)
         ->post('/social-links/{id}/delete', 'social-links.delete', DeleteSocialLinkController::class),
     
     (new Extend\Model('Flarum\User\User'))
