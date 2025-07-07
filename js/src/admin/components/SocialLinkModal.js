@@ -132,10 +132,8 @@ export default class SocialLinkModal extends Modal {
     let promise;
     
     if (this.socialLink) {
-      // 既存ソーシャルリンクの更新 - 属性を直接設定してから保存
-      Object.keys(data).forEach(key => {
-        this.socialLink.data.attributes[key] = data[key];
-      });
+      // 既存ソーシャルリンクの更新 - pushAttributesを使用
+      this.socialLink.pushAttributes(data);
       promise = this.socialLink.save();
     } else {
       // 新規ソーシャルリンクの作成

@@ -156,11 +156,9 @@ export default class ProfileFieldModal extends Modal {
     let request;
     
     if (this.attrs.field) {
-      // 既存フィールドの更新 - 属性を直接設定してから保存
+      // 既存フィールドの更新 - pushAttributesを使用
       const field = this.attrs.field;
-      Object.keys(data).forEach(key => {
-        field.data.attributes[key] = data[key];
-      });
+      field.pushAttributes(data);
       request = field.save();
     } else {
       // 新規フィールドの作成
