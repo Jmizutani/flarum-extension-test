@@ -17,7 +17,7 @@ export default class SocialLinkModal extends Modal {
   }
 
   className() {
-    return 'SocialLinkModal Modal--small';
+    return 'SocialLinkModal Modal--medium';
   }
 
   title() {
@@ -60,20 +60,20 @@ export default class SocialLinkModal extends Modal {
               bidi={this.iconUrl}
             />
             <div className="helpText">
-              SVGアイコンのURLを入力してください。Simple Iconsなどのサービスを利用できます。
+              アイコンのURLを入力してください。PNG、SVG、JPGなどの画像形式に対応しています。
             </div>
           </div>
 
           <div className="Form-group">
-            <label>URLパターン</label>
+            <label>プレースホルダー</label>
             <input
               className="FormControl"
               type="text"
-              placeholder="https://facebook.com/{username}"
+              placeholder="https://facebook.com/username"
               bidi={this.urlPattern}
             />
             <div className="helpText">
-              {'{username}'}の部分がユーザー入力値に置き換えられます。
+              ユーザーの入力欄に表示されるプレースホルダー（入力例）を設定します。
             </div>
           </div>
 

@@ -64,6 +64,53 @@ export default class UserProfileModal extends Modal {
     return 'プロフィール編集';
   }
 
+  oncreate(vnode) {
+    super.oncreate(vnode);
+    
+    // モーダルが開いたら最初のフォーカス可能な要素にフォーカスを移動
+    setTimeout(() => {
+      this.focusFirstElement(vnode.dom);
+    }, 100);
+    
+    // フォーカストラップを設定
+    this.trapFocus(vnode.dom);
+  }
+
+  focusFirstElement(container) {
+    const focusableElements = container.querySelectorAll(
+      'input:not([disabled]), textarea:not([disabled]), select:not([disabled]), button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    
+    if (focusableElements.length > 0) {
+      focusableElements[0].focus();
+    }
+  }
+
+  trapFocus(container) {
+    const focusableElements = container.querySelectorAll(
+      'input:not([disabled]), textarea:not([disabled]), select:not([disabled]), button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    container.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+    });
+  }
+
   content() {
     if (this.fieldsLoading) {
       return (
@@ -131,12 +178,14 @@ export default class UserProfileModal extends Modal {
               className="Button Button--primary"
               type="submit"
               loading={this.loading}
+              tabindex="0"
             >
               保存
             </Button>
             <Button
               className="Button Button--default"
               onclick={this.hide.bind(this)}
+              tabindex="0"
             >
               キャンセル
             </Button>
