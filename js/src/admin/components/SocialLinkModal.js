@@ -134,8 +134,8 @@ export default class SocialLinkModal extends Modal {
     if (this.socialLink) {
       // 既存ソーシャルリンクの更新 - 直接APIコールを使用
       promise = app.request({
-        url: app.forum.attribute('apiUrl') + '/social-links/' + this.socialLink.id() + '/update',
-        method: 'POST',
+        url: app.forum.attribute('apiUrl') + '/social-links/' + this.socialLink.id(),
+        method: 'PATCH',
         body: {
           data: {
             type: 'social-links',
