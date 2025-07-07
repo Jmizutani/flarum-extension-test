@@ -133,13 +133,9 @@ export default class SocialLinkModal extends Modal {
     
     if (this.socialLink) {
       // 既存ソーシャルリンクの更新 - 直接APIコールを使用
-      promise = m.request({
-        method: 'POST',
+      promise = app.request({
         url: app.forum.attribute('apiUrl') + '/social-links/' + this.socialLink.id() + '/update',
-        headers: {
-          'X-CSRF-Token': app.session.csrfToken,
-          'X-HTTP-Method-Override': 'PATCH'
-        },
+        method: 'POST',
         body: {
           data: {
             type: 'social-links',

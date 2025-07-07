@@ -157,13 +157,9 @@ export default class ProfileFieldModal extends Modal {
     
     if (this.attrs.field) {
       // 既存フィールドの更新 - 直接APIコールを使用
-      request = m.request({
-        method: 'POST',
+      request = app.request({
         url: app.forum.attribute('apiUrl') + '/profile-fields/' + this.attrs.field.id() + '/update',
-        headers: {
-          'X-CSRF-Token': app.session.csrfToken,
-          'X-HTTP-Method-Override': 'PATCH'
-        },
+        method: 'POST',
         body: {
           data: {
             type: 'profile-fields',
