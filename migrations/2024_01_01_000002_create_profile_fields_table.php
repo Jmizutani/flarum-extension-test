@@ -8,6 +8,7 @@ return Migration::createTable('profile_fields', function (Blueprint $table) {
     $table->string('name');
     $table->string('label');
     $table->enum('type', ['text', 'textarea']);
+    $table->string('placeholder')->nullable();
     $table->boolean('required')->default(false);
     $table->integer('sort_order')->default(0);
     $table->boolean('is_active')->default(true);

@@ -8,7 +8,7 @@ return [
         $connection = $schema->getConnection();
         
         $defaultFields = [
-            ['name' => 'introduction', 'label' => '自己紹介', 'type' => 'textarea', 'sort_order' => 1],
+            ['name' => 'introduction', 'label' => '自己紹介', 'type' => 'textarea', 'placeholder' => 'あなたの自己紹介を入力してください', 'sort_order' => 1],
         ];
         
         foreach ($defaultFields as $field) {
@@ -16,6 +16,7 @@ return [
                 'name' => $field['name'],
                 'label' => $field['label'],
                 'type' => $field['type'],
+                'placeholder' => $field['placeholder'],
                 'required' => false,
                 'sort_order' => $field['sort_order'],
                 'is_active' => true,
