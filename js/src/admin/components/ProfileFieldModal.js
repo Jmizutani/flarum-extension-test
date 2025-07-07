@@ -137,9 +137,19 @@ export default class ProfileFieldModal extends Modal {
       isActive: this.isActive()
     };
     
-    const request = this.attrs.field 
-      ? this.attrs.field.save(data)
-      : app.store.createRecord('profile-fields').save(data);
+    let request;
+    
+    if (this.attrs.field) {
+      // 既存フィールドの更新 - 各属性を個別に設定
+      const field = this.attrs.field;
+      field.pushData({
+        attributes: data
+      });
+      request = field.save();
+    } else {
+      // 新規フィールドの作成
+      request = app.store.createRecord('profile-fields').save(data);
+    }
     
     request
       .then(() => {
