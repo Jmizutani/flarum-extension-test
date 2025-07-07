@@ -18,7 +18,7 @@ class DeleteSocialLinkController extends AbstractDeleteController
             throw new PermissionDeniedException();
         }
         
-        $id = array_get($request->getQueryParams(), 'id');
+        $id = $request->getAttribute('id');
         $socialLink = SocialLink::findOrFail($id);
         
         $socialLink->delete();

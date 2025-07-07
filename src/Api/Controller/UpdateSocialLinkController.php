@@ -22,7 +22,7 @@ class UpdateSocialLinkController extends AbstractShowController
             throw new PermissionDeniedException();
         }
         
-        $id = array_get($request->getQueryParams(), 'id');
+        $id = $request->getAttribute('id');
         $socialLink = SocialLink::findOrFail($id);
         
         $data = $request->getParsedBody()['data']['attributes'] ?? [];
