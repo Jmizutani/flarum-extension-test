@@ -156,8 +156,12 @@ export default class ProfileFieldModal extends Modal {
     let request;
     
     if (this.attrs.field) {
-      // 既存フィールドの更新
-      request = this.attrs.field.save(data);
+      // 既存フィールドの更新 - 属性を直接設定してから保存
+      const field = this.attrs.field;
+      Object.keys(data).forEach(key => {
+        field.data.attributes[key] = data[key];
+      });
+      request = field.save();
     } else {
       // 新規フィールドの作成
       request = app.store.createRecord('profile-fields').save(data);

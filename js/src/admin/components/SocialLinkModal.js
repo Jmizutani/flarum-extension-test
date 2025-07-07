@@ -129,9 +129,18 @@ export default class SocialLinkModal extends Modal {
       isActive: this.isActive()
     };
 
-    const promise = this.socialLink
-      ? this.socialLink.save(data)
-      : app.store.createRecord('social-links').save(data);
+    let promise;
+    
+    if (this.socialLink) {
+      // 既存ソーシャルリンクの更新 - 属性を直接設定してから保存
+      Object.keys(data).forEach(key => {
+        this.socialLink.data.attributes[key] = data[key];
+      });
+      promise = this.socialLink.save();
+    } else {
+      // 新規ソーシャルリンクの作成
+      promise = app.store.createRecord('social-links').save(data);
+    }
 
     promise
       .then(() => {
