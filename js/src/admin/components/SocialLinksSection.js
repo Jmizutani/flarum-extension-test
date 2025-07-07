@@ -127,7 +127,6 @@ export default class SocialLinksSection extends Component {
         method: 'POST',
         url: app.forum.attribute('apiUrl') + '/social-links/' + socialLink.id() + '/delete',
         headers: {
-          'Content-Type': 'application/vnd.api+json',
           'X-CSRF-Token': app.session.csrfToken,
           'X-HTTP-Method-Override': 'DELETE'
         }

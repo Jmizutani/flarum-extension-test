@@ -161,17 +161,16 @@ export default class ProfileFieldModal extends Modal {
         method: 'POST',
         url: app.forum.attribute('apiUrl') + '/profile-fields/' + this.attrs.field.id(),
         headers: {
-          'Content-Type': 'application/vnd.api+json',
           'X-CSRF-Token': app.session.csrfToken,
           'X-HTTP-Method-Override': 'PATCH'
         },
-        body: JSON.stringify({
+        body: {
           data: {
             type: 'profile-fields',
             id: this.attrs.field.id(),
             attributes: data
           }
-        })
+        }
       }).then(response => {
         app.store.pushPayload(response);
         return app.store.getById('profile-fields', this.attrs.field.id());

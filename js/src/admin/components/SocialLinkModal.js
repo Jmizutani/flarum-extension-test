@@ -137,17 +137,16 @@ export default class SocialLinkModal extends Modal {
         method: 'POST',
         url: app.forum.attribute('apiUrl') + '/social-links/' + this.socialLink.id(),
         headers: {
-          'Content-Type': 'application/vnd.api+json',
           'X-CSRF-Token': app.session.csrfToken,
           'X-HTTP-Method-Override': 'PATCH'
         },
-        body: JSON.stringify({
+        body: {
           data: {
             type: 'social-links',
             id: this.socialLink.id(),
             attributes: data
           }
-        })
+        }
       }).then(response => {
         app.store.pushPayload(response);
         return app.store.getById('social-links', this.socialLink.id());

@@ -125,7 +125,6 @@ export default class ProfileFieldsPage extends Component {
         method: 'POST',
         url: app.forum.attribute('apiUrl') + '/profile-fields/' + field.id() + '/delete',
         headers: {
-          'Content-Type': 'application/vnd.api+json',
           'X-CSRF-Token': app.session.csrfToken,
           'X-HTTP-Method-Override': 'DELETE'
         }
