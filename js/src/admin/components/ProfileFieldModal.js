@@ -12,6 +12,7 @@ export default class ProfileFieldModal extends Modal {
     this.name = Stream(field ? field.name() : '');
     this.label = Stream(field ? field.label() : '');
     this.type = Stream(field ? field.type() : 'text');
+    this.placeholder = Stream(field ? field.placeholder() : '');
     this.required = Stream(field ? field.required() : false);
     this.sortOrder = Stream(field ? field.sortOrder() : 0);
     this.isActive = Stream(field ? field.isActive() : true);
@@ -66,6 +67,20 @@ export default class ProfileFieldModal extends Modal {
               <option value="text">テキスト（1行）</option>
               <option value="textarea">テキストエリア（複数行）</option>
             </select>
+          </div>
+          
+          <div className="Form-group">
+            <label>プレースホルダー</label>
+            <input
+              className="FormControl"
+              type="text"
+              value={this.placeholder()}
+              oninput={(e) => this.placeholder(e.target.value)}
+              placeholder="ユーザーの入力欄に表示される例文"
+            />
+            <div className="helpText">
+              ユーザーがフィールドを入力する際のヒントとして表示されます。
+            </div>
           </div>
           
           <div className="Form-group">
@@ -132,6 +147,7 @@ export default class ProfileFieldModal extends Modal {
       name: this.name(),
       label: this.label(),
       type: this.type(),
+      placeholder: this.placeholder(),
       required: this.required(),
       sortOrder: this.sortOrder(),
       isActive: this.isActive()

@@ -19,6 +19,7 @@ class ProfileFieldSerializer extends AbstractSerializer
             'name' => $field->name,
             'label' => $field->label,
             'type' => $field->type,
+            'placeholder' => $field->placeholder,
             'required' => $field->required,
             'sortOrder' => $field->sort_order,
             'isActive' => $field->is_active,

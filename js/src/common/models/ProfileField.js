@@ -4,6 +4,7 @@ export default class ProfileField extends Model {
   name = Model.attribute('name');
   label = Model.attribute('label');
   type = Model.attribute('type');
+  placeholder = Model.attribute('placeholder');
   required = Model.attribute('required');
   sortOrder = Model.attribute('sortOrder');
   isActive = Model.attribute('isActive');

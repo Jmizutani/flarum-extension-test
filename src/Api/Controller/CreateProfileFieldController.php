@@ -28,6 +28,7 @@ class CreateProfileFieldController extends AbstractCreateController
             'name' => $data['name'],
             'label' => $data['label'],
             'type' => $data['type'] ?? 'text',
+            'placeholder' => $data['placeholder'] ?? '',
             'required' => $data['required'] ?? false,
             'sort_order' => $data['sortOrder'] ?? 0,
             'is_active' => $data['isActive'] ?? true

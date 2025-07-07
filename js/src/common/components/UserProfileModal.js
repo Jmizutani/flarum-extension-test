@@ -274,7 +274,7 @@ export default class UserProfileModal extends Modal {
             value={stream()}
             oninput={(e) => stream(e.target.value)}
             rows="4"
-            placeholder={`${field.label()}を入力してください`}
+            placeholder={field.placeholder() || `${field.label()}を入力してください`}
             required={field.required()}
           />
         ) : (
@@ -283,7 +283,7 @@ export default class UserProfileModal extends Modal {
             type="text"
             value={stream()}
             oninput={(e) => stream(e.target.value)}
-            placeholder={`${field.label()}を入力してください`}
+            placeholder={field.placeholder() || `${field.label()}を入力してください`}
             required={field.required()}
           />
         )}

@@ -31,6 +31,7 @@ class UpdateProfileFieldController extends AbstractShowController
             'name' => $data['name'] ?? $field->name,
             'label' => $data['label'] ?? $field->label,
             'type' => $data['type'] ?? $field->type,
+            'placeholder' => $data['placeholder'] ?? $field->placeholder,
             'required' => $data['required'] ?? $field->required,
             'sort_order' => $data['sortOrder'] ?? $field->sort_order,
             'is_active' => $data['isActive'] ?? $field->is_active

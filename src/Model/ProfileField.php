@@ -12,6 +12,7 @@ class ProfileField extends AbstractModel
         'name',
         'label',
         'type',
+        'placeholder',
         'required',
         'sort_order',
         'is_active'
