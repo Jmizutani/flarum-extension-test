@@ -6,7 +6,7 @@ Object.assign(SocialLink.prototype, {
   name: Model.attribute('name'),
   label: Model.attribute('label'),
   iconUrl: Model.attribute('iconUrl'),
-  urlPattern: Model.attribute('urlPattern'),
+  placeholder: Model.attribute('placeholder'),
   sortOrder: Model.attribute('sortOrder'),
   isActive: Model.attribute('isActive'),
   createdAt: Model.attribute('createdAt'),

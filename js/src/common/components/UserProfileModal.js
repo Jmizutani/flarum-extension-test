@@ -22,7 +22,9 @@ export default class UserProfileModal extends Modal {
     this.isVisible = Stream(isVisible !== undefined ? isVisible : true);
     this.loading = false;
     this.fieldsLoading = true;
+    this.socialLinksLoading = true;
     this.fields = [];
+    this.socialLinks = [];
     this.customFields = {};
     
     // カスタムフィールドの初期化
@@ -31,6 +33,7 @@ export default class UserProfileModal extends Modal {
     }
     
     this.loadFields();
+    this.loadSocialLinks();
   }
 
   loadFields() {
@@ -54,6 +57,44 @@ export default class UserProfileModal extends Modal {
         this.fieldsLoading = false;
         m.redraw();
       });
+  }
+
+  loadSocialLinks() {
+    app.store.find('social-links')
+      .then(links => {
+        this.socialLinks = links
+          .filter(link => link.isActive())
+          .sort((a, b) => a.sortOrder() - b.sortOrder());
+        this.socialLinksLoading = false;
+        m.redraw();
+      })
+      .catch(error => {
+        console.error('ソーシャルリンクの読み込みに失敗しました:', error);
+        // エラーの場合はデフォルトのソーシャルリンクを使用
+        this.socialLinks = this.getDefaultSocialLinks();
+        this.socialLinksLoading = false;
+        m.redraw();
+      });
+  }
+
+  getDefaultSocialLinks() {
+    return [
+      {
+        name: () => 'facebook',
+        label: () => 'Facebook URL',
+        placeholder: () => 'https://facebook.com/username'
+      },
+      {
+        name: () => 'x',
+        label: () => 'X (Twitter) URL',
+        placeholder: () => 'https://x.com/username'
+      },
+      {
+        name: () => 'instagram',
+        label: () => 'Instagram URL',
+        placeholder: () => 'https://instagram.com/username'
+      }
+    ];
   }
 
   className() {
@@ -131,38 +172,42 @@ export default class UserProfileModal extends Modal {
             <h4>ソーシャルリンク</h4>
           </div>
           
-          <div className="Form-group">
-            <label>Facebook URL</label>
-            <input
-              className="FormControl"
-              type="url"
-              value={this.facebookUrl()}
-              oninput={(e) => this.facebookUrl(e.target.value)}
-              placeholder="https://facebook.com/username"
-            />
-          </div>
-          
-          <div className="Form-group">
-            <label>X (Twitter) URL</label>
-            <input
-              className="FormControl"
-              type="url"
-              value={this.xUrl()}
-              oninput={(e) => this.xUrl(e.target.value)}
-              placeholder="https://x.com/username"
-            />
-          </div>
-          
-          <div className="Form-group">
-            <label>Instagram URL</label>
-            <input
-              className="FormControl"
-              type="url"
-              value={this.instagramUrl()}
-              oninput={(e) => this.instagramUrl(e.target.value)}
-              placeholder="https://instagram.com/username"
-            />
-          </div>
+          {this.socialLinksLoading ? (
+            <div className="LoadingIndicator">読み込み中...</div>
+          ) : (
+            this.socialLinks.map(link => {
+              const fieldName = link.name();
+              let fieldStream;
+              
+              // 既存の固定フィールドとのマッピング
+              if (fieldName === 'facebook') {
+                fieldStream = this.facebookUrl;
+              } else if (fieldName === 'x') {
+                fieldStream = this.xUrl;
+              } else if (fieldName === 'instagram') {
+                fieldStream = this.instagramUrl;
+              } else {
+                // 新しい動的フィールドの場合
+                if (!this[fieldName + 'Url']) {
+                  this[fieldName + 'Url'] = Stream('');
+                }
+                fieldStream = this[fieldName + 'Url'];
+              }
+              
+              return (
+                <div key={fieldName} className="Form-group">
+                  <label>{link.label()}</label>
+                  <input
+                    className="FormControl"
+                    type="url"
+                    value={fieldStream()}
+                    oninput={(e) => fieldStream(e.target.value)}
+                    placeholder={link.placeholder()}
+                  />
+                </div>
+              );
+            })
+          )}
           
           <div className="Form-group">
             <Switch

@@ -19,7 +19,7 @@ class SocialLinkSerializer extends AbstractSerializer
             'name' => $socialLink->name,
             'label' => $socialLink->label,
             'iconUrl' => $socialLink->icon_url,
-            'urlPattern' => $socialLink->url_pattern,
+            'placeholder' => $socialLink->placeholder,
             'sortOrder' => $socialLink->sort_order,
             'isActive' => $socialLink->is_active,
             'createdAt' => $socialLink->created_at ? $this->formatDate($socialLink->created_at) : null,

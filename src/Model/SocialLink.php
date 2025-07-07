@@ -12,7 +12,7 @@ class SocialLink extends AbstractModel
         'name',
         'label',
         'icon_url',
-        'url_pattern',
+        'placeholder',
         'sort_order',
         'is_active'
     ];

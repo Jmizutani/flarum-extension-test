@@ -28,7 +28,7 @@ class CreateSocialLinkController extends AbstractCreateController
             'name' => $data['name'],
             'label' => $data['label'],
             'icon_url' => $data['iconUrl'] ?? '',
-            'url_pattern' => $data['urlPattern'] ?? '',
+            'placeholder' => $data['placeholder'] ?? '',
             'sort_order' => $data['sortOrder'] ?? 0,
             'is_active' => $data['isActive'] ?? true
         ]);

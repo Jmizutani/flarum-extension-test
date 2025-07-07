@@ -11,7 +11,7 @@ export default class SocialLinkModal extends Modal {
     this.name = Stream(this.socialLink?.name() || '');
     this.label = Stream(this.socialLink?.label() || '');
     this.iconUrl = Stream(this.socialLink?.iconUrl() || '');
-    this.urlPattern = Stream(this.socialLink?.urlPattern() || '');
+    this.placeholder = Stream(this.socialLink?.placeholder() || '');
     this.sortOrder = Stream(this.socialLink?.sortOrder() || 0);
     this.isActive = Stream(this.socialLink?.isActive() ?? true);
   }
@@ -70,7 +70,7 @@ export default class SocialLinkModal extends Modal {
               className="FormControl"
               type="text"
               placeholder="https://facebook.com/username"
-              bidi={this.urlPattern}
+              bidi={this.placeholder}
             />
             <div className="helpText">
               ユーザーの入力欄に表示されるプレースホルダー（入力例）を設定します。
@@ -124,7 +124,7 @@ export default class SocialLinkModal extends Modal {
       name: this.name(),
       label: this.label(),
       iconUrl: this.iconUrl(),
-      urlPattern: this.urlPattern(),
+      placeholder: this.placeholder(),
       sortOrder: parseInt(this.sortOrder()) || 0,
       isActive: this.isActive()
     };

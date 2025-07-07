@@ -31,7 +31,7 @@ class UpdateSocialLinkController extends AbstractShowController
             'name' => $data['name'] ?? $socialLink->name,
             'label' => $data['label'] ?? $socialLink->label,
             'icon_url' => $data['iconUrl'] ?? $socialLink->icon_url,
-            'url_pattern' => $data['urlPattern'] ?? $socialLink->url_pattern,
+            'placeholder' => $data['placeholder'] ?? $socialLink->placeholder,
             'sort_order' => $data['sortOrder'] ?? $socialLink->sort_order,
             'is_active' => $data['isActive'] ?? $socialLink->is_active
         ]);
