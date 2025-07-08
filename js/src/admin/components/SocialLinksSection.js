@@ -124,8 +124,8 @@ export default class SocialLinksSection extends Component {
   deleteSocialLink(socialLink) {
     if (confirm(`ソーシャルリンク「${socialLink.label()}」を削除してもよろしいですか？`)) {
       app.request({
-        url: app.forum.attribute('apiUrl') + '/social-links/' + socialLink.id(),
-        method: 'DELETE'
+        url: app.forum.attribute('apiUrl') + '/social-links/' + socialLink.id() + '/delete',
+        method: 'POST'
       })
         .then(() => this.loadSocialLinks())
         .catch(error => {

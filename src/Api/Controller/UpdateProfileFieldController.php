@@ -16,32 +16,48 @@ class UpdateProfileFieldController extends AbstractShowController
     
     protected function data(ServerRequestInterface $request, Document $document)
     {
-        // デバッグログ
-        error_log('UpdateProfileFieldController called');
-        error_log('Request method: ' . $request->getMethod());
-        error_log('Request headers: ' . json_encode($request->getHeaders()));
-        
-        $actor = RequestUtil::getActor($request);
-        
-        if (!$actor->isAdmin()) {
-            throw new PermissionDeniedException();
+        try {
+            error_log('UpdateProfileFieldController: Starting');
+            
+            $actor = RequestUtil::getActor($request);
+            error_log('UpdateProfileFieldController: Actor obtained, isAdmin = ' . ($actor->isAdmin() ? 'true' : 'false'));
+            
+            if (!$actor->isAdmin()) {
+                error_log('UpdateProfileFieldController: Permission denied');
+                throw new PermissionDeniedException();
+            }
+            
+            $id = $request->getAttribute('id');
+            error_log('UpdateProfileFieldController: ID = ' . $id);
+            
+            $field = ProfileField::findOrFail($id);
+            error_log('UpdateProfileFieldController: Field found, name = ' . $field->name);
+            
+            $body = $request->getParsedBody();
+            error_log('UpdateProfileFieldController: Parsed body = ' . json_encode($body));
+            
+            $data = $body['data']['attributes'] ?? [];
+            error_log('UpdateProfileFieldController: Attributes = ' . json_encode($data));
+            
+            $field->update([
+                'name' => $data['name'] ?? $field->name,
+                'label' => $data['label'] ?? $field->label,
+                'type' => $data['type'] ?? $field->type,
+                'placeholder' => $data['placeholder'] ?? $field->placeholder,
+                'required' => $data['required'] ?? $field->required,
+                'sort_order' => $data['sortOrder'] ?? $field->sort_order,
+                'is_active' => $data['isActive'] ?? $field->is_active
+            ]);
+            
+            error_log('UpdateProfileFieldController: Update completed successfully');
+            error_log('UpdateProfileFieldController: Returning field with ID = ' . $field->id);
+            error_log('UpdateProfileFieldController: Field data = ' . json_encode($field->toArray()));
+            return $field;
+            
+        } catch (\Exception $e) {
+            error_log('UpdateProfileFieldController: Exception = ' . $e->getMessage());
+            error_log('UpdateProfileFieldController: Stack trace = ' . $e->getTraceAsString());
+            throw $e;
         }
-        
-        $id = $request->getAttribute('id');
-        $data = $request->getParsedBody()['data']['attributes'] ?? [];
-        
-        $field = ProfileField::findOrFail($id);
-        
-        $field->update([
-            'name' => $data['name'] ?? $field->name,
-            'label' => $data['label'] ?? $field->label,
-            'type' => $data['type'] ?? $field->type,
-            'placeholder' => $data['placeholder'] ?? $field->placeholder,
-            'required' => $data['required'] ?? $field->required,
-            'sort_order' => $data['sortOrder'] ?? $field->sort_order,
-            'is_active' => $data['isActive'] ?? $field->is_active
-        ]);
-        
-        return $field;
     }
 }
