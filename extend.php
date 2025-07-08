@@ -26,10 +26,12 @@ return [
     
     (new Extend\Routes('api'))
         ->get('/profile-fields', 'profile-fields.index', ListProfileFieldsController::class)
+        ->patch('/profile-fields/{id:[0-9]+}', 'profile-fields.update', UpdateProfileFieldController::class)
         ->post('/profile-fields/{id:[0-9]+}', 'profile-fields.update', UpdateProfileFieldController::class)
         ->post('/profile-fields/{id:[0-9]+}/delete', 'profile-fields.delete', DeleteProfileFieldController::class)
         ->post('/profile-fields', 'profile-fields.create', CreateProfileFieldController::class)
         ->get('/social-links', 'social-links.index', ListSocialLinksController::class)
+        ->patch('/social-links/{id:[0-9]+}', 'social-links.update', UpdateSocialLinkController::class)
         ->post('/social-links/{id:[0-9]+}', 'social-links.update', UpdateSocialLinkController::class)
         ->post('/social-links/{id:[0-9]+}/delete', 'social-links.delete', DeleteSocialLinkController::class)
         ->post('/social-links', 'social-links.create', CreateSocialLinkController::class)

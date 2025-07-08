@@ -2,15 +2,18 @@
 
 namespace Junya\UserProfile\Api\Controller;
 
-use Flarum\Api\Controller\AbstractDeleteController;
+use Flarum\Api\Controller\AbstractShowController;
 use Flarum\Http\RequestUtil;
 use Flarum\User\Exception\PermissionDeniedException;
 use Junya\UserProfile\Model\ProfileField;
 use Psr\Http\Message\ServerRequestInterface;
+use Tobscure\JsonApi\Document;
 
-class DeleteProfileFieldController extends AbstractDeleteController
+class DeleteProfileFieldController extends AbstractShowController
 {
-    protected function delete(ServerRequestInterface $request)
+    public $serializer = \Junya\UserProfile\Api\Serializer\ProfileFieldSerializer::class;
+    
+    protected function data(ServerRequestInterface $request, Document $document)
     {
         $actor = RequestUtil::getActor($request);
         
@@ -22,5 +25,7 @@ class DeleteProfileFieldController extends AbstractDeleteController
         
         $field = ProfileField::findOrFail($id);
         $field->delete();
+        
+        return $field;
     }
 }
