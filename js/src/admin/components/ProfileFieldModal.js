@@ -157,7 +157,7 @@ export default class ProfileFieldModal extends Modal {
     
     if (this.attrs.field) {
       // 既存フィールドの更新 - 直接APIコールを使用
-      request = app.request({
+      const requestConfig = {
         url: app.forum.attribute('apiUrl') + '/profile-fields/' + this.attrs.field.id(),
         method: 'PATCH',
         body: {
@@ -167,9 +167,17 @@ export default class ProfileFieldModal extends Modal {
             attributes: data
           }
         }
-      }).then(response => {
+      };
+      
+      console.log('ProfileField update request:', requestConfig);
+      
+      request = app.request(requestConfig).then(response => {
+        console.log('ProfileField update response:', response);
         app.store.pushPayload(response);
         return app.store.getById('profile-fields', this.attrs.field.id());
+      }).catch(error => {
+        console.error('ProfileField update error:', error);
+        throw error;
       });
     } else {
       // 新規フィールドの作成

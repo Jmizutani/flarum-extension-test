@@ -16,6 +16,11 @@ class UpdateProfileFieldController extends AbstractShowController
     
     protected function data(ServerRequestInterface $request, Document $document)
     {
+        // デバッグログ
+        error_log('UpdateProfileFieldController called');
+        error_log('Request method: ' . $request->getMethod());
+        error_log('Request headers: ' . json_encode($request->getHeaders()));
+        
         $actor = RequestUtil::getActor($request);
         
         if (!$actor->isAdmin()) {
