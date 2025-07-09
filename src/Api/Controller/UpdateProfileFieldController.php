@@ -29,6 +29,15 @@ class UpdateProfileFieldController extends AbstractShowController
             
             $id = $request->getAttribute('id');
             error_log('UpdateProfileFieldController: ID = ' . $id);
+            error_log('UpdateProfileFieldController: Request URI = ' . $request->getUri()->getPath());
+            error_log('UpdateProfileFieldController: Request attributes = ' . json_encode($request->getAttributes()));
+            
+            // URLから直接IDを取得する試行
+            $path = $request->getUri()->getPath();
+            if (preg_match('/\/profile-fields\/(\d+)/', $path, $matches)) {
+                $id = $matches[1];
+                error_log('UpdateProfileFieldController: ID extracted from URL = ' . $id);
+            }
             
             $field = ProfileField::findOrFail($id);
             error_log('UpdateProfileFieldController: Field found, name = ' . $field->name);

@@ -29,6 +29,15 @@ class UpdateSocialLinkController extends AbstractShowController
             
             $id = $request->getAttribute('id');
             error_log('UpdateSocialLinkController: ID = ' . $id);
+            error_log('UpdateSocialLinkController: Request URI = ' . $request->getUri()->getPath());
+            error_log('UpdateSocialLinkController: Request attributes = ' . json_encode($request->getAttributes()));
+            
+            // URLから直接IDを取得する試行
+            $path = $request->getUri()->getPath();
+            if (preg_match('/\/social-links\/(\d+)/', $path, $matches)) {
+                $id = $matches[1];
+                error_log('UpdateSocialLinkController: ID extracted from URL = ' . $id);
+            }
             
             $socialLink = SocialLink::findOrFail($id);
             error_log('UpdateSocialLinkController: SocialLink found, name = ' . $socialLink->name);
