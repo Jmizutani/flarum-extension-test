@@ -26,21 +26,22 @@ class SocialLink extends AbstractModel
         'updated_at' => 'datetime'
     ];
     
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
         
-        // icon_urlが必須であることを確認
-        static::creating(function ($model) {
-            if (empty($model->icon_url)) {
-                throw new \InvalidArgumentException('icon_url is required');
-            }
-        });
+    //     // icon_urlが必須であることを確認（作成・更新時のみ）
+    //     static::creating(function ($model) {
+    //         if (empty($model->icon_url)) {
+    //             throw new \InvalidArgumentException('icon_url is required for creating social link');
+    //         }
+    //     });
         
-        static::updating(function ($model) {
-            if (empty($model->icon_url)) {
-                throw new \InvalidArgumentException('icon_url is required');
-            }
-        });
-    }
+    //     static::updating(function ($model) {
+    //         // 更新時は変更されたフィールドのみチェック
+    //         if ($model->isDirty('icon_url') && empty($model->icon_url)) {
+    //             throw new \InvalidArgumentException('icon_url is required for updating social link');
+    //         }
+    //     });
+    // }
 }

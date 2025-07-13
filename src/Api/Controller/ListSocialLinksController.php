@@ -14,8 +14,24 @@ class ListSocialLinksController extends AbstractListController
     
     protected function data(ServerRequestInterface $request, Document $document)
     {
-        $request->getAttribute('actor')->assertAdmin();
-        
-        return SocialLink::orderBy('sort_order')->get();
+        try {
+            error_log('ListSocialLinksController: Starting');
+            
+            $actor = $request->getAttribute('actor');
+            error_log('ListSocialLinksController: Actor obtained');
+            
+            $actor->assertAdmin();
+            error_log('ListSocialLinksController: Admin check passed');
+            
+            $socialLinks = SocialLink::orderBy('sort_order')->get();
+            error_log('ListSocialLinksController: Found ' . $socialLinks->count() . ' social links');
+            
+            return $socialLinks;
+            
+        } catch (\Exception $e) {
+            error_log('ListSocialLinksController: Exception = ' . $e->getMessage());
+            error_log('ListSocialLinksController: Stack trace = ' . $e->getTraceAsString());
+            throw $e;
+        }
     }
 }
