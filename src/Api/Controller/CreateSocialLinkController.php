@@ -24,10 +24,25 @@ class CreateSocialLinkController extends AbstractCreateController
         
         $data = $request->getParsedBody()['data']['attributes'] ?? [];
         
+        // バリデーション
+        if (!isset($data['iconUrl']) || empty(trim($data['iconUrl']))) {
+            throw new \Illuminate\Validation\ValidationException(
+                app('validator')->make([], []),
+                ['icon_url' => ['アイコンURLは必須です。']]
+            );
+        }
+        
+        if (!filter_var($data['iconUrl'], FILTER_VALIDATE_URL)) {
+            throw new \Illuminate\Validation\ValidationException(
+                app('validator')->make([], []),
+                ['icon_url' => ['有効なURLを入力してください。']]
+            );
+        }
+        
         $socialLink = new SocialLink([
             'name' => $data['name'],
             'label' => $data['label'],
-            'icon_url' => $data['iconUrl'] ?? '',
+            'icon_url' => $data['iconUrl'],
             'placeholder' => $data['placeholder'] ?? '',
             'sort_order' => $data['sortOrder'] ?? 0,
             'is_active' => $data['isActive'] ?? true

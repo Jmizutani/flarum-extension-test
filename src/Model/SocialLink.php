@@ -25,4 +25,22 @@ class SocialLink extends AbstractModel
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
     ];
+    
+    protected static function boot()
+    {
+        parent::boot();
+        
+        // icon_urlが必須であることを確認
+        static::creating(function ($model) {
+            if (empty($model->icon_url)) {
+                throw new \InvalidArgumentException('icon_url is required');
+            }
+        });
+        
+        static::updating(function ($model) {
+            if (empty($model->icon_url)) {
+                throw new \InvalidArgumentException('icon_url is required');
+            }
+        });
+    }
 }

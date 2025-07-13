@@ -14,6 +14,8 @@ export default class SocialLinkModal extends Modal {
     this.placeholder = Stream(this.socialLink?.placeholder() || '');
     this.sortOrder = Stream(this.socialLink?.sortOrder() || 0);
     this.isActive = Stream(this.socialLink?.isActive() ?? true);
+    
+    this.errors = {};
   }
 
   className() {
@@ -52,13 +54,19 @@ export default class SocialLinkModal extends Modal {
           </div>
 
           <div className="Form-group">
-            <label>アイコンURL</label>
+            <label>アイコンURL <span className="required">*</span></label>
             <input
-              className="FormControl"
+              className={`FormControl ${this.errors.iconUrl ? 'FormControl--error' : ''}`}
               type="url"
               placeholder="https://example.com/icon.svg"
               bidi={this.iconUrl}
+              required
             />
+            {this.errors.iconUrl && (
+              <div className="Form-error">
+                {this.errors.iconUrl}
+              </div>
+            )}
             <div className="helpText">
               アイコンのURLを入力してください。PNG、SVG、JPGなどの画像形式に対応しています。
             </div>
@@ -124,6 +132,26 @@ export default class SocialLinkModal extends Modal {
   onsubmit(e) {
     e.preventDefault();
 
+    // バリデーション
+    this.errors = {};
+    
+    if (!this.iconUrl() || this.iconUrl().trim() === '') {
+      this.errors.iconUrl = 'アイコンURLは必須です。';
+    } else {
+      // URL形式のチェック
+      try {
+        new URL(this.iconUrl());
+      } catch {
+        this.errors.iconUrl = '有効なURLを入力してください。';
+      }
+    }
+    
+    // エラーがある場合は送信を停止
+    if (Object.keys(this.errors).length > 0) {
+      m.redraw();
+      return;
+    }
+
     this.loading = true;
 
     const data = {
@@ -165,7 +193,18 @@ export default class SocialLinkModal extends Modal {
           this.attrs.onsubmit();
         }
       })
-      .catch(() => {})
+      .catch(error => {
+        console.error('Social link save error:', error);
+        
+        // サーバーサイドエラーを表示
+        if (error.response && error.response.errors) {
+          error.response.errors.forEach(err => {
+            if (err.source && err.source.pointer === '/data/attributes/icon_url') {
+              this.errors.iconUrl = err.detail || 'アイコンURLでエラーが発生しました。';
+            }
+          });
+        }
+      })
       .then(() => {
         this.loading = false;
         m.redraw();

@@ -36,6 +36,23 @@ class UpdateSocialLinkController extends AbstractShowController
         
         $data = $request->getParsedBody()['data']['attributes'] ?? [];
         
+        // アイコンURLのバリデーション（更新時に新しい値が提供された場合）
+        if (isset($data['iconUrl'])) {
+            if (empty(trim($data['iconUrl']))) {
+                throw new \Illuminate\Validation\ValidationException(
+                    app('validator')->make([], []),
+                    ['icon_url' => ['アイコンURLは必須です。']]
+                );
+            }
+            
+            if (!filter_var($data['iconUrl'], FILTER_VALIDATE_URL)) {
+                throw new \Illuminate\Validation\ValidationException(
+                    app('validator')->make([], []),
+                    ['icon_url' => ['有効なURLを入力してください。']]
+                );
+            }
+        }
+        
         $socialLink->update([
             'name' => $data['name'] ?? $socialLink->name,
             'label' => $data['label'] ?? $socialLink->label,

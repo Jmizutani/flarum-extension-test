@@ -9,7 +9,7 @@ return Migration::createTable(
         $table->increments('id');
         $table->string('name')->unique();
         $table->string('label');
-        $table->text('icon_url')->nullable();
+        $table->text('icon_url');
         $table->string('placeholder')->nullable();
         $table->integer('sort_order')->default(0);
         $table->boolean('is_active')->default(true);
