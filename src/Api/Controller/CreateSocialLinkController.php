@@ -24,7 +24,7 @@ class CreateSocialLinkController extends AbstractCreateController
         
         $data = $request->getParsedBody()['data']['attributes'] ?? [];
         
-        return SocialLink::create([
+        $socialLink = new SocialLink([
             'name' => $data['name'],
             'label' => $data['label'],
             'icon_url' => $data['iconUrl'] ?? '',
@@ -32,5 +32,9 @@ class CreateSocialLinkController extends AbstractCreateController
             'sort_order' => $data['sortOrder'] ?? 0,
             'is_active' => $data['isActive'] ?? true
         ]);
+        
+        $socialLink->save();
+        
+        return $socialLink;
     }
 }

@@ -8,6 +8,8 @@ class ProfileField extends AbstractModel
 {
     protected $table = 'profile_fields';
     
+    public $timestamps = true;
+    
     protected $fillable = [
         'name',
         'label',

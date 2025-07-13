@@ -8,6 +8,8 @@ class SocialLink extends AbstractModel
 {
     protected $table = 'social_links';
     
+    public $timestamps = true;
+    
     protected $fillable = [
         'name',
         'label',

@@ -24,7 +24,7 @@ class CreateProfileFieldController extends AbstractCreateController
         
         $data = $request->getParsedBody()['data']['attributes'] ?? [];
         
-        return ProfileField::create([
+        $field = new ProfileField([
             'name' => $data['name'],
             'label' => $data['label'],
             'type' => $data['type'] ?? 'text',
@@ -33,5 +33,9 @@ class CreateProfileFieldController extends AbstractCreateController
             'sort_order' => $data['sortOrder'] ?? 0,
             'is_active' => $data['isActive'] ?? true
         ]);
+        
+        $field->save();
+        
+        return $field;
     }
 }

@@ -45,6 +45,8 @@ class UpdateSocialLinkController extends AbstractShowController
             'is_active' => $data['isActive'] ?? $socialLink->is_active
         ]);
         
+        $socialLink->touch();
+        
         return $socialLink;
     }
 }

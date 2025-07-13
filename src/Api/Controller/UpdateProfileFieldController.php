@@ -46,6 +46,8 @@ class UpdateProfileFieldController extends AbstractShowController
             'is_active' => $data['isActive'] ?? $field->is_active
         ]);
         
+        $field->touch();
+        
         return $field;
     }
 }
