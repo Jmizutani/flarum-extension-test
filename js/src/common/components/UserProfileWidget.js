@@ -32,7 +32,6 @@ export default class UserProfileWidget extends Component {
         m.redraw();
       })
       .catch(error => {
-        console.log('Profile not found or error:', error);
         this.profile = null;
         this.loading = false;
         m.redraw();

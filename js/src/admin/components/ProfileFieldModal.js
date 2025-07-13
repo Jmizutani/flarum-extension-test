@@ -213,14 +213,10 @@ export default class ProfileFieldModal extends Modal {
         }
       };
       
-      console.log('ProfileField update request:', requestConfig);
-      
       request = app.request(requestConfig).then(response => {
-        console.log('ProfileField update response:', response);
         app.store.pushPayload(response);
         return app.store.getById('profile-fields', this.attrs.field.id());
       }).catch(error => {
-        console.error('ProfileField update error:', error);
         throw error;
       });
     } else {
