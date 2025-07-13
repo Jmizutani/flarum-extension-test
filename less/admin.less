@@ -18,8 +18,9 @@
   margin-left: 3px;
 }
 
-// SocialLinkModalのスタイル
-.SocialLinkModal {
+// 管理画面モーダルの共通スタイル
+.SocialLinkModal,
+.ProfileFieldModal {
   .Modal-body {
     max-height: 80vh;
     overflow-y: auto;
@@ -48,6 +49,11 @@
         border-color: #4d698e;
         box-shadow: 0 0 0 2px rgba(77, 105, 142, 0.2);
       }
+    }
+    
+    select.FormControl {
+      height: auto;
+      padding: 10px 12px;
     }
     
     .helpText {
@@ -83,6 +89,14 @@
       border-radius: 50%;
       transition: all 0.2s ease;
       box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+  }
+  
+  .Button {
+    margin-right: 10px;
+    
+    &:last-child {
+      margin-right: 0;
     }
   }
 }

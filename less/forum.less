@@ -157,26 +157,18 @@
   }
 }
 
-// Profile Fields Admin Page
-.ProfileFieldsPage {
-  &-header {
-    background: #f7f7f7;
-    border-bottom: 1px solid #e8e8e8;
-    padding: 20px 0;
-    margin-bottom: 30px;
-    
-    .container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    h2 {
-      margin: 0;
-      font-size: 24px;
-      font-weight: 600;
-    }
+// User Profile Settings Page
+.UserProfileSettingsPage {
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
   }
+}
+
+// Profile Fields Section
+.ProfileFieldsSection {
+  margin-bottom: 40px;
   
   &-empty {
     text-align: center;
@@ -354,11 +346,9 @@
     }
   }
   
-  .ProfileFieldsPage {
-    &-header .container {
-      flex-direction: column;
-      gap: 15px;
-      align-items: stretch;
+  .UserProfileSettingsPage {
+    .container {
+      padding: 15px;
     }
   }
   

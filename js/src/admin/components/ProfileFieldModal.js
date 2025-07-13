@@ -1,6 +1,5 @@
 import Modal from 'flarum/common/components/Modal';
 import Button from 'flarum/common/components/Button';
-import Switch from 'flarum/common/components/Switch';
 import Stream from 'flarum/common/utils/Stream';
 
 export default class ProfileFieldModal extends Modal {
@@ -108,21 +107,41 @@ export default class ProfileFieldModal extends Modal {
           </div>
           
           <div className="Form-group">
-            <Switch
-              state={this.required()}
-              onchange={this.required}
-            >
-              必須フィールド
-            </Switch>
+            <label>必須フィールド</label>
+            <div style="display: flex; align-items: center; margin-top: 5px;">
+              <div 
+                className={`switch ${this.required() ? 'switch--on' : 'switch--off'}`}
+                onclick={() => this.required(!this.required())}
+                style={`position: relative; width: 50px; height: 24px; background: ${this.required() ? '#4CAF50' : '#ccc'}; border-radius: 12px; cursor: pointer; transition: all 0.2s ease;`}
+              >
+                <div 
+                  className="switch-thumb"
+                  style={`position: absolute; top: 2px; left: ${this.required() ? '26px' : '2px'}; width: 20px; height: 20px; background: white; border-radius: 50%; transition: all 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.3);`}
+                ></div>
+              </div>
+              <span style="margin-left: 10px; color: #666;">
+                {this.required() ? '必須' : '任意'}
+              </span>
+            </div>
           </div>
           
           <div className="Form-group">
-            <Switch
-              state={this.isActive()}
-              onchange={this.isActive}
-            >
-              有効
-            </Switch>
+            <label>有効状態</label>
+            <div style="display: flex; align-items: center; margin-top: 5px;">
+              <div 
+                className={`switch ${this.isActive() ? 'switch--on' : 'switch--off'}`}
+                onclick={() => this.isActive(!this.isActive())}
+                style={`position: relative; width: 50px; height: 24px; background: ${this.isActive() ? '#4CAF50' : '#ccc'}; border-radius: 12px; cursor: pointer; transition: all 0.2s ease;`}
+              >
+                <div 
+                  className="switch-thumb"
+                  style={`position: absolute; top: 2px; left: ${this.isActive() ? '26px' : '2px'}; width: 20px; height: 20px; background: white; border-radius: 50%; transition: all 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.3);`}
+                ></div>
+              </div>
+              <span style="margin-left: 10px; color: #666;">
+                {this.isActive() ? '有効' : '無効'}
+              </span>
+            </div>
           </div>
           
           <div className="Form-group">
