@@ -86,6 +86,7 @@ export default class ProfileFieldsPage extends Component {
           <div style="font-weight: bold; margin-bottom: 5px;">
             {field.label()}
             {field.required() && <span style="color: red; margin-left: 5px;">*</span>}
+            {!field.isActive() && <span style="color: #888; margin-left: 5px;">（無効）</span>}
           </div>
           <div style="font-size: 12px; color: #666;">
             <span>名前: {field.name()}</span>

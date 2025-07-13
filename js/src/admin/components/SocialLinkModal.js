@@ -88,15 +88,21 @@ export default class SocialLinkModal extends Modal {
           </div>
 
           <div className="Form-group">
-            <div>
-              <label className="checkbox">
-                <input
-                  type="checkbox"
-                  checked={this.isActive()}
-                  onchange={(e) => this.isActive(e.target.checked)}
-                />
-                有効
-              </label>
+            <label>有効状態</label>
+            <div style="display: flex; align-items: center; margin-top: 5px;">
+              <div 
+                className={`switch ${this.isActive() ? 'switch--on' : 'switch--off'}`}
+                onclick={() => this.isActive(!this.isActive())}
+                style={`position: relative; width: 50px; height: 24px; background: ${this.isActive() ? '#4CAF50' : '#ccc'}; border-radius: 12px; cursor: pointer; transition: all 0.2s ease;`}
+              >
+                <div 
+                  className="switch-thumb"
+                  style={`position: absolute; top: 2px; left: ${this.isActive() ? '26px' : '2px'}; width: 20px; height: 20px; background: white; border-radius: 50%; transition: all 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.3);`}
+                ></div>
+              </div>
+              <span style="margin-left: 10px; color: #666;">
+                {this.isActive() ? '有効' : '無効'}
+              </span>
             </div>
           </div>
 
