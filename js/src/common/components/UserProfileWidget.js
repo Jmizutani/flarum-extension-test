@@ -19,13 +19,21 @@ export default class UserProfileWidget extends Component {
   }
 
   loadProfile() {
+    this.loading = true;
+    
+    // キャッシュをクリアして最新データを取得
+    app.store.data = app.store.data || {};
+    delete app.store.data['user-profiles'];
+    
     app.store.find('user-profiles', { userId: this.user.id() })
       .then(profile => {
         this.profile = profile;
         this.loading = false;
         m.redraw();
       })
-      .catch(() => {
+      .catch(error => {
+        console.log('Profile not found or error:', error);
+        this.profile = null;
         this.loading = false;
         m.redraw();
       });
@@ -59,6 +67,10 @@ export default class UserProfileWidget extends Component {
 
   refreshProfile(newProfile) {
     this.profile = newProfile;
+    // プロフィール作成・更新後に少し遅延してからデータを再読み込み
+    setTimeout(() => {
+      this.loadProfile();
+    }, 100);
     m.redraw();
   }
 
@@ -72,40 +84,45 @@ export default class UserProfileWidget extends Component {
 
     return (
       <div className="UserProfileWidget">
-        <div className="UserProfileWidget-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: nowrap;">
-          <h3 style="margin: 0; flex-shrink: 0; white-space: nowrap;">プロフィール</h3>
-          {isOwnProfile && canView && this.profile && (
-            <Button
-              className="Button Button--primary Button--small"
-              onclick={() => app.modal.show(UserProfileModal, { 
-                profile: this.profile,
-                onSave: (newProfile) => this.refreshProfile(newProfile)
-              })}
-              style="margin-left: 10px; flex-shrink: 0;"
-            >
-              編集
-            </Button>
-          )}
+        <div className="UserProfileWidget-header">
+          <h3>プロフィール</h3>
         </div>
         
         {canView && this.profile ? (
-          <div className="UserProfileWidget-content">
-            {/* カスタムフィールドの表示 */}
-            {this.renderCustomFields()}
+          <div>
+            <div className="UserProfileWidget-content">
+              {/* カスタムフィールドの表示 */}
+              {this.renderCustomFields()}
+              
+              {/* ソーシャルリンク */}
+              {this.renderSocialLinks()}
+              
+              {!this.profile.isVisible() && isOwnProfile && (
+                <div className="UserProfileWidget-section">
+                  <em>このプロフィールは非公開に設定されています。</em>
+                </div>
+              )}
+            </div>
             
-            {/* ソーシャルリンク */}
-            {this.renderSocialLinks()}
-            
-            {!this.profile.isVisible() && isOwnProfile && (
-              <div className="UserProfileWidget-section">
-                <em>このプロフィールは非公開に設定されています。</em>
+            {/* 編集ボタンをコンテンツの下に配置 */}
+            {isOwnProfile && (
+              <div className="UserProfileWidget-actions">
+                <Button
+                  className="Button Button--primary"
+                  onclick={() => app.modal.show(UserProfileModal, { 
+                    profile: this.profile,
+                    onSave: (newProfile) => this.refreshProfile(newProfile)
+                  })}
+                >
+                  プロフィールを編集
+                </Button>
               </div>
             )}
           </div>
         ) : (
           <div className="UserProfileWidget-content">
             {isOwnProfile ? (
-              <div className="UserProfileWidget-empty" style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 6px; border: 1px solid #e9ecef;">
+              <div className="UserProfileWidget-empty">
                 <p style="margin-bottom: 15px; color: #666;">プロフィールが設定されていません。</p>
                 <Button
                   className="Button Button--primary"
@@ -119,7 +136,7 @@ export default class UserProfileWidget extends Component {
                 </Button>
               </div>
             ) : (
-              <div className="UserProfileWidget-empty" style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 6px; border: 1px solid #e9ecef;">
+              <div className="UserProfileWidget-empty">
                 <p style="margin: 0; color: #666;">プロフィールは非公開に設定されています。</p>
               </div>
             )}

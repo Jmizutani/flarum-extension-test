@@ -9,29 +9,28 @@
     background: #f7f7f7;
     border-bottom: 1px solid #e8e8e8;
     padding: 15px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: nowrap;
-    min-height: 50px;
     
     h3 {
       margin: 0;
       font-size: 16px;
       font-weight: 600;
       color: #333;
-      flex-shrink: 0;
-      white-space: nowrap;
-    }
-    
-    .Button {
-      margin-left: 10px;
-      flex-shrink: 0;
     }
   }
   
   &-content {
     padding: 20px;
+  }
+  
+  &-actions {
+    padding: 15px 20px;
+    border-top: 1px solid #e8e8e8;
+    background: #fafafa;
+    text-align: center;
+    
+    .Button {
+      min-width: 120px;
+    }
   }
   
   &-section {
@@ -96,10 +95,6 @@
   
   &-empty {
     text-align: center;
-    padding: 30px 20px;
-    background: #f8f9fa;
-    border-radius: 6px;
-    border: 1px solid #e9ecef;
     margin: 0;
     
     p {
