@@ -273,8 +273,8 @@
   margin-left: 3px;
 }
 
-// レスポンシブ対応: 大きな画面
-@media (min-width: 1200px) {
+// レスポンシブ対応: 大きなデスクトップ画面
+@media (min-width: @screen-desktop-lg-min) {
   .UserProfileWidget {
     &-header {
       padding: 20px 25px;
@@ -286,6 +286,10 @@
     
     &-content {
       padding: 25px;
+    }
+    
+    &-actions {
+      padding: 20px 25px;
     }
     
     &-empty {
@@ -300,13 +304,10 @@
   }
 }
 
-// レスポンシブ対応: 中程度の画面
-@media (min-width: 769px) and (max-width: 1199px) {
+// レスポンシブ対応: タブレット・中程度のデスクトップ画面
+@media (min-width: @screen-tablet-min) and (max-width: @screen-desktop-lg-min - 1) {
   .UserProfileWidget {
     &-header {
-      flex-wrap: nowrap;
-      overflow: hidden;
-      
       h3 {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -317,28 +318,25 @@
   }
 }
 
-// レスポンシブ対応: 小さな画面
-@media (max-width: 768px) {
+// レスポンシブ対応: モバイル画面
+@media (max-width: @screen-phone-max) {
   .UserProfileWidget {
+    margin-top: 20px;
+     
     &-header {
       padding: 12px 15px;
-      flex-direction: column;
-      gap: 10px;
-      align-items: stretch;
       
       h3 {
         font-size: 14px;
-        text-align: center;
-      }
-      
-      .Button {
-        margin-left: 0;
-        width: 100%;
       }
     }
     
     &-content {
       padding: 15px;
+    }
+    
+    &-actions {
+      padding: 12px 15px;
     }
     
     &-socialLinks {
