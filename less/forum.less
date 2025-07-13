@@ -12,12 +12,21 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: nowrap;
+    min-height: 50px;
     
     h3 {
       margin: 0;
       font-size: 16px;
       font-weight: 600;
       color: #333;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    
+    .Button {
+      margin-left: 10px;
+      flex-shrink: 0;
     }
   }
   
@@ -87,11 +96,23 @@
   
   &-empty {
     text-align: center;
-    padding: 20px;
-    color: #888;
+    padding: 30px 20px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    margin: 0;
     
     p {
       margin: 0 0 15px 0;
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .Button {
+      width: 100%;
+      max-width: 200px;
+      margin: 0 auto;
+      display: block;
     }
   }
 }
@@ -257,13 +278,67 @@
   margin-left: 3px;
 }
 
+// レスポンシブ対応: 大きな画面
+@media (min-width: 1200px) {
+  .UserProfileWidget {
+    &-header {
+      padding: 20px 25px;
+      
+      h3 {
+        font-size: 18px;
+      }
+    }
+    
+    &-content {
+      padding: 25px;
+    }
+    
+    &-empty {
+      padding: 40px 30px;
+      
+      .Button {
+        max-width: 250px;
+        padding: 12px 24px;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+// レスポンシブ対応: 中程度の画面
+@media (min-width: 769px) and (max-width: 1199px) {
+  .UserProfileWidget {
+    &-header {
+      flex-wrap: nowrap;
+      overflow: hidden;
+      
+      h3 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        min-width: 0;
+      }
+    }
+  }
+}
+
+// レスポンシブ対応: 小さな画面
 @media (max-width: 768px) {
   .UserProfileWidget {
     &-header {
       padding: 12px 15px;
+      flex-direction: column;
+      gap: 10px;
+      align-items: stretch;
       
       h3 {
         font-size: 14px;
+        text-align: center;
+      }
+      
+      .Button {
+        margin-left: 0;
+        width: 100%;
       }
     }
     
@@ -274,6 +349,15 @@
     &-socialLinks {
       flex-direction: column;
       gap: 8px;
+    }
+    
+    &-empty {
+      padding: 20px 15px;
+      
+      .Button {
+        max-width: none;
+        width: 100%;
+      }
     }
   }
   
