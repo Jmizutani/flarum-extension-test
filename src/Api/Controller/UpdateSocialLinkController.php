@@ -36,7 +36,21 @@ class UpdateSocialLinkController extends AbstractShowController
         
         $data = $request->getParsedBody()['data']['attributes'] ?? [];
         
-        // アイコンURLのバリデーション（更新時に新しい値が提供された場合）
+        // バリデーション（更新時に新しい値が提供された場合）
+        if (isset($data['name']) && empty(trim($data['name']))) {
+            throw new \Illuminate\Validation\ValidationException(
+                app('validator')->make([], []),
+                ['name' => ['名前は必須です。']]
+            );
+        }
+        
+        if (isset($data['label']) && empty(trim($data['label']))) {
+            throw new \Illuminate\Validation\ValidationException(
+                app('validator')->make([], []),
+                ['label' => ['表示名は必須です。']]
+            );
+        }
+        
         if (isset($data['iconUrl'])) {
             if (empty(trim($data['iconUrl']))) {
                 throw new \Illuminate\Validation\ValidationException(

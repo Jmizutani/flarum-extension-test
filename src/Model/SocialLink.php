@@ -30,8 +30,14 @@ class SocialLink extends AbstractModel
     {
         parent::boot();
         
-        // icon_urlが必須であることを確認（作成・更新時のみ）
+        // 必須フィールドの確認（作成・更新時）
         static::creating(function ($model) {
+            if (empty($model->name)) {
+                throw new \InvalidArgumentException('name is required for creating social link');
+            }
+            if (empty($model->label)) {
+                throw new \InvalidArgumentException('label is required for creating social link');
+            }
             if (empty($model->icon_url)) {
                 throw new \InvalidArgumentException('icon_url is required for creating social link');
             }
@@ -39,6 +45,12 @@ class SocialLink extends AbstractModel
         
         static::updating(function ($model) {
             // 更新時は変更されたフィールドのみチェック
+            if ($model->isDirty('name') && empty($model->name)) {
+                throw new \InvalidArgumentException('name is required for updating social link');
+            }
+            if ($model->isDirty('label') && empty($model->label)) {
+                throw new \InvalidArgumentException('label is required for updating social link');
+            }
             if ($model->isDirty('icon_url') && empty($model->icon_url)) {
                 throw new \InvalidArgumentException('icon_url is required for updating social link');
             }

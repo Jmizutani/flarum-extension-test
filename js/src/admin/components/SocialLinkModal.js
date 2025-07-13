@@ -31,26 +31,38 @@ export default class SocialLinkModal extends Modal {
       <div className="Modal-body">
         <div className="Form">
           <div className="Form-group">
-            <label>名前 (内部用)</label>
+            <label>名前 (内部用) <span className="required">*</span></label>
             <input
-              className="FormControl"
+              className={`FormControl ${this.errors.name ? 'FormControl--error' : ''}`}
               type="text"
               placeholder="facebook, x, instagram など"
               bidi={this.name}
+              required
             />
+            {this.errors.name && (
+              <div className="Form-error">
+                {this.errors.name}
+              </div>
+            )}
             <div className="helpText">
               システム内部で使用される識別子です。英数字とアンダースコアのみ使用可能。
             </div>
           </div>
 
           <div className="Form-group">
-            <label>表示名</label>
+            <label>表示名 <span className="required">*</span></label>
             <input
-              className="FormControl"
+              className={`FormControl ${this.errors.label ? 'FormControl--error' : ''}`}
               type="text"
               placeholder="Facebook, X (Twitter), Instagram など"
               bidi={this.label}
+              required
             />
+            {this.errors.label && (
+              <div className="Form-error">
+                {this.errors.label}
+              </div>
+            )}
           </div>
 
           <div className="Form-group">
@@ -134,6 +146,14 @@ export default class SocialLinkModal extends Modal {
 
     // バリデーション
     this.errors = {};
+    
+    if (!this.name() || this.name().trim() === '') {
+      this.errors.name = '名前は必須です。';
+    }
+    
+    if (!this.label() || this.label().trim() === '') {
+      this.errors.label = '表示名は必須です。';
+    }
     
     if (!this.iconUrl() || this.iconUrl().trim() === '') {
       this.errors.iconUrl = 'アイコンURLは必須です。';

@@ -36,6 +36,21 @@ class UpdateProfileFieldController extends AbstractShowController
         
         $data = $request->getParsedBody()['data']['attributes'] ?? [];
         
+        // バリデーション（更新時に新しい値が提供された場合）
+        if (isset($data['name']) && empty(trim($data['name']))) {
+            throw new \Illuminate\Validation\ValidationException(
+                app('validator')->make([], []),
+                ['name' => ['フィールド名は必須です。']]
+            );
+        }
+        
+        if (isset($data['label']) && empty(trim($data['label']))) {
+            throw new \Illuminate\Validation\ValidationException(
+                app('validator')->make([], []),
+                ['label' => ['表示ラベルは必須です。']]
+            );
+        }
+        
         $field->update([
             'name' => $data['name'] ?? $field->name,
             'label' => $data['label'] ?? $field->label,

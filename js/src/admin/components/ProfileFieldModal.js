@@ -17,6 +17,7 @@ export default class ProfileFieldModal extends Modal {
     this.sortOrder = Stream(field ? field.sortOrder() : 0);
     this.isActive = Stream(field ? field.isActive() : true);
     this.loading = false;
+    this.errors = {};
   }
 
   className() {
@@ -32,29 +33,41 @@ export default class ProfileFieldModal extends Modal {
       <div className="Modal-body">
         <div className="Form">
           <div className="Form-group">
-            <label>フィールド名 (内部名)</label>
+            <label>フィールド名 (内部名) <span className="required">*</span></label>
             <input
-              className="FormControl"
+              className={`FormControl ${this.errors.name ? 'FormControl--error' : ''}`}
               type="text"
               value={this.name()}
               oninput={(e) => this.name(e.target.value)}
               placeholder="例: introduction"
               disabled={!!this.attrs.field}
+              required
             />
+            {this.errors.name && (
+              <div className="Form-error">
+                {this.errors.name}
+              </div>
+            )}
             {this.attrs.field && (
               <p className="helpText">既存フィールドの内部名は変更できません。</p>
             )}
           </div>
           
           <div className="Form-group">
-            <label>表示ラベル</label>
+            <label>表示ラベル <span className="required">*</span></label>
             <input
-              className="FormControl"
+              className={`FormControl ${this.errors.label ? 'FormControl--error' : ''}`}
               type="text"
               value={this.label()}
               oninput={(e) => this.label(e.target.value)}
               placeholder="例: 自己紹介"
+              required
             />
+            {this.errors.label && (
+              <div className="Form-error">
+                {this.errors.label}
+              </div>
+            )}
           </div>
           
           <div className="Form-group">
@@ -135,8 +148,20 @@ export default class ProfileFieldModal extends Modal {
   onsubmit(e) {
     e.preventDefault();
     
-    if (!this.name() || !this.label()) {
-      alert('フィールド名と表示ラベルは必須です。');
+    // バリデーション
+    this.errors = {};
+    
+    if (!this.name() || this.name().trim() === '') {
+      this.errors.name = 'フィールド名は必須です。';
+    }
+    
+    if (!this.label() || this.label().trim() === '') {
+      this.errors.label = '表示ラベルは必須です。';
+    }
+    
+    // エラーがある場合は送信を停止
+    if (Object.keys(this.errors).length > 0) {
+      m.redraw();
       return;
     }
     

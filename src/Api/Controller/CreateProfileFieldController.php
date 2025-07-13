@@ -24,6 +24,21 @@ class CreateProfileFieldController extends AbstractCreateController
         
         $data = $request->getParsedBody()['data']['attributes'] ?? [];
         
+        // バリデーション
+        if (empty($data['name'])) {
+            throw new \Illuminate\Validation\ValidationException(
+                app('validator')->make([], []),
+                ['name' => ['フィールド名は必須です。']]
+            );
+        }
+        
+        if (empty($data['label'])) {
+            throw new \Illuminate\Validation\ValidationException(
+                app('validator')->make([], []),
+                ['label' => ['表示ラベルは必須です。']]
+            );
+        }
+        
         $field = new ProfileField([
             'name' => $data['name'],
             'label' => $data['label'],
