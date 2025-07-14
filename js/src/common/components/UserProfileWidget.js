@@ -31,7 +31,7 @@ export default class UserProfileWidget extends Component {
         this.loading = false;
         m.redraw();
       })
-      .catch(error => {
+      .catch(() => {
         this.profile = null;
         this.loading = false;
         m.redraw();
