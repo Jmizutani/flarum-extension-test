@@ -10,10 +10,8 @@ export default class UserProfileSettingsPage extends Component {
   view() {
     return (
       <div className="UserProfileSettingsPage">
-        <div className="container">
-          <ProfileFieldsSection />
-          <SocialLinksSection />
-        </div>
+        <ProfileFieldsSection />
+        <SocialLinksSection />
       </div>
     );
   }
