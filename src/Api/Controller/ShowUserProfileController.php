@@ -29,8 +29,14 @@ class ShowUserProfileController extends AbstractShowController
             return null;
         }
         
+        // 非公開プロフィールでも200を返すが、データは制限する
         if (!$profile->is_visible && $actor->id != $userId && !$actor->isAdmin()) {
-            throw new PermissionDeniedException();
+            // 非公開プロフィールの場合は空のプロフィールオブジェクトを返す
+            $emptyProfile = new UserProfile();
+            $emptyProfile->user_id = $userId;
+            $emptyProfile->is_visible = false;
+            // 他のフィールドは空のまま
+            return $emptyProfile;
         }
         
         return $profile;
