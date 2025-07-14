@@ -37,6 +37,7 @@ export default class SocialLinkModal extends Modal {
               type="text"
               placeholder="facebook, x, instagram など"
               bidi={this.name}
+              disabled={!!this.socialLink}
               required
             />
             {this.errors.name && (
@@ -44,9 +45,13 @@ export default class SocialLinkModal extends Modal {
                 {this.errors.name}
               </div>
             )}
-            <div className="helpText">
-              システム内部で使用される識別子です。英数字とアンダースコアのみ使用可能。
-            </div>
+            {this.socialLink && (
+              <p className="helpText">既存ソーシャルリンクの内部名は変更できません。</p>
+            ) || (
+              <div className="helpText">
+                システム内部で使用される識別子です。英数字とアンダースコアのみ使用可能。
+              </div>
+            )}
           </div>
 
           <div className="Form-group">
