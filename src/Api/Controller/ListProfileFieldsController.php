@@ -14,7 +14,8 @@ class ListProfileFieldsController extends AbstractListController
     
     protected function data(ServerRequestInterface $request, Document $document)
     {
-        $request->getAttribute('actor')->assertAdmin();
+        // フィールド定義は誰でも閲覧可能（プロフィール表示に必要）
+        // 管理機能（作成・更新・削除）は別のコントローラーで管理者権限をチェック
         
         return ProfileField::orderBy('sort_order')
             ->get();
