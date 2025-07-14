@@ -31,7 +31,7 @@ export default class SocialLinkModal extends Modal {
       <div className="Modal-body">
         <div className="Form">
           <div className="Form-group">
-            <label>名前 (内部用) <span className="required">*</span></label>
+            <label>ソーシャルリンク名 (内部用) <span className="required">*</span></label>
             <input
               className={`FormControl ${this.errors.name ? 'FormControl--error' : ''}`}
               type="text"
@@ -127,14 +127,19 @@ export default class SocialLinkModal extends Modal {
           </div>
 
           <div className="Form-group">
-            {Button.component(
-              {
-                type: 'submit',
-                className: 'Button Button--primary Button--block',
-                loading: this.loading,
-              },
-              this.socialLink ? '更新' : '作成'
-            )}
+            <Button
+              className="Button Button--primary"
+              type="submit"
+              loading={this.loading}
+            >
+              保存
+            </Button>
+            <Button
+              className="Button Button--default"
+              onclick={this.hide.bind(this)}
+            >
+              キャンセル
+            </Button>
           </div>
         </div>
       </div>

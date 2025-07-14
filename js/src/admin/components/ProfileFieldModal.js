@@ -32,7 +32,7 @@ export default class ProfileFieldModal extends Modal {
       <div className="Modal-body">
         <div className="Form">
           <div className="Form-group">
-            <label>フィールド名 (内部名) <span className="required">*</span></label>
+            <label>フィールド名 (内部用) <span className="required">*</span></label>
             <input
               className={`FormControl ${this.errors.name ? 'FormControl--error' : ''}`}
               type="text"
