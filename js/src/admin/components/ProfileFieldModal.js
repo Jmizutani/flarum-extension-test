@@ -49,6 +49,10 @@ export default class ProfileFieldModal extends Modal {
             )}
             {this.attrs.field && (
               <p className="helpText">既存フィールドの内部名は変更できません。</p>
+            ) || (
+              <div className="helpText">
+                システム内部で使用される識別子です。英数字とアンダースコアのみ使用可能。
+              </div>
             )}
           </div>
           
