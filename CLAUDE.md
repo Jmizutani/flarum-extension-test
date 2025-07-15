@@ -39,6 +39,12 @@ This design allows unlimited custom fields without schema changes.
 - **Asset Management**: Separate builds for admin and forum with shared common components
 - **API Design**: RESTful endpoints following Flarum's JSON API conventions
 
+### File Structure
+- **`src/`**: PHP backend code (Models, API Controllers, Serializers)
+- **`js/src/`**: JavaScript frontend code with admin, forum, and common modules
+- **`migrations/`**: Database schema and default data setup
+- **`extend.php`**: Main extension bootstrap file
+
 ## Development Commands
 
 ```bash
@@ -53,6 +59,10 @@ npm run watch          # Watch mode for development
 
 # Clear Flarum cache after PHP changes
 php flarum cache:clear
+
+# Extension debugging
+php flarum info         # Show Flarum and extension info
+php flarum migrate      # Run pending migrations
 
 # No lint or test commands currently configured
 ```

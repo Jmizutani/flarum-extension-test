@@ -11,10 +11,10 @@
 - **並び順制御**: フィールドの表示順序をカスタマイズ
 - **有効/無効切替**: フィールドの表示/非表示を制御
 
-### 🔗 **ソーシャルリンク** (固定項目)
-- **Facebook**: Facebookプロフィールへのリンク
-- **X (Twitter)**: X（旧Twitter）プロフィールへのリンク  
-- **Instagram**: Instagramプロフィールへのリンク
+### 🔗 **ソーシャルリンク**
+- **動的リンク管理**: 管理者がソーシャルリンクの種類を追加・編集・削除
+- **標準設定**: Facebook、X (Twitter)、Instagramが初期設定で利用可能
+- **カスタマイズ**: アイコン、ラベル、URL形式を自由に設定
 
 ### 🔒 **プライバシー設定**
 - **公開/非公開設定**: プロフィール全体の表示制御
@@ -51,6 +51,17 @@
    - **並び順**: 表示順序（数値）
 5. 「保存」をクリック
 
+### 🔧 **管理者: ソーシャルリンクの設定**
+
+1. Flarum管理画面の「User Profile」設定内で「ソーシャルリンク」タブを選択
+2. 「新しいソーシャルリンクを追加」をクリック
+3. リンク情報を入力:
+   - **リンク名**: 内部識別名（例: github）
+   - **表示ラベル**: ユーザーに表示される名前（例: GitHub）
+   - **アイコン**: Font Awesomeアイコン名（例: fab fa-github）
+   - **URL形式**: プレースホルダー付きURL（例: https://github.com/{username}）
+4. 「保存」をクリック
+
 ### 👤 **ユーザー: プロフィールの編集**
 
 1. ユーザープロフィールページにアクセス
@@ -73,15 +84,26 @@
 
 - **`profile_fields`**: カスタムフィールド定義テーブル
 - **`profile_field_values`**: ユーザーのフィールド値テーブル
-- **`user_profiles`**: ユーザープロフィール基本情報（ソーシャルリンク、可視性設定）
+- **`user_profiles`**: ユーザープロフィール基本情報（可視性設定）
+- **`social_links`**: ソーシャルリンク定義テーブル
+- **`user_social_links`**: ユーザーのソーシャルリンク値テーブル
 
 ### 🔌 **API エンドポイント**
 
+**カスタムフィールド管理（管理者）**
 - `GET /api/profile-fields` - カスタムフィールド一覧取得
 - `POST /api/profile-fields` - カスタムフィールド作成
 - `PATCH /api/profile-fields/{id}` - カスタムフィールド更新
 - `DELETE /api/profile-fields/{id}` - カスタムフィールド削除
-- `GET /api/user-profiles` - ユーザープロフィール取得
+
+**ソーシャルリンク管理（管理者）**
+- `GET /api/social-links` - ソーシャルリンク一覧取得
+- `POST /api/social-links` - ソーシャルリンク作成
+- `PATCH /api/social-links/{id}` - ソーシャルリンク更新
+- `DELETE /api/social-links/{id}` - ソーシャルリンク削除
+
+**ユーザープロフィール**
+- `GET /api/user-profiles?userId={id}` - ユーザープロフィール取得
 - `POST /api/user-profiles` - ユーザープロフィール作成/更新
 
 ### 🏗️ **アーキテクチャ**
@@ -105,10 +127,21 @@ npm run build
 npm run build:dev
 ```
 
-### デバッグ
+### デバッグとメンテナンス
+
+```bash
+# Flarumキャッシュクリア（PHP変更後）
+php flarum cache:clear
+
+# 拡張機能情報確認
+php flarum info
+
+# データベースマイグレーション実行
+php flarum migrate
+```
 
 - フロントエンドの変更は自動的にリロードされます
-- バックエンドの変更後は `php flarum cache:clear` を実行
+- バックエンドの変更後は必ずキャッシュクリアを実行
 
 ## ライセンス
 
